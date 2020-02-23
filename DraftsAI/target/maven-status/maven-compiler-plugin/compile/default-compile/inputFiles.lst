@@ -1,4 +1,10 @@
-C:\Users\Ryan Kelly\Documents\Assignment2\K00219181\DraftsAI\src\main\java\Game.java
-C:\Users\Ryan Kelly\Documents\Assignment2\K00219181\DraftsAI\src\main\java\DraftsMain.java
-C:\Users\Ryan Kelly\Documents\Assignment2\K00219181\DraftsAI\src\main\java\EvaluateMove.java
-C:\Users\Ryan Kelly\Documents\Assignment2\K00219181\DraftsAI\src\main\java\MoveCalculator.java
+C:\Users\Ryan Kelly\Documents\Assignment2\K00219181\DraftsAI\src\main\java\MainFolder\MoveCalculator.java
+C:\Users\Ryan Kelly\Documents\Assignment2\K00219181\DraftsAI\src\main\java\MainFolder\CheckersBoard.java
+C:\Users\Ryan Kelly\Documents\Assignment2\K00219181\DraftsAI\src\main\java\MainFolder\GreyPiece.java
+C:\Users\Ryan Kelly\Documents\Assignment2\K00219181\DraftsAI\src\main\java\MainFolder\RedPiece.java
+C:\Users\Ryan Kelly\Documents\Assignment2\K00219181\DraftsAI\src\main\java\MainFolder\TestMinimax.java
+C:\Users\Ryan Kelly\Documents\Assignment2\K00219181\DraftsAI\src\main\java\MainFolder\TestTreeNode.java
+C:\Users\Ryan Kelly\Documents\Assignment2\K00219181\DraftsAI\src\main\java\MainFolder\Game.java
+C:\Users\Ryan Kelly\Documents\Assignment2\K00219181\DraftsAI\src\main\java\MainFolder\DraftsMain.java
+C:\Users\Ryan Kelly\Documents\Assignment2\K00219181\DraftsAI\src\main\java\MainFolder\EvaluateMove.java
+C:\Users\Ryan Kelly\Documents\Assignment2\K00219181\DraftsAI\src\main\java\MainFolder\TreeNode.java

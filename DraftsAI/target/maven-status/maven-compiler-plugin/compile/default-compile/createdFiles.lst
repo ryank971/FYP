@@ -1,4 +1,10 @@
-MoveCalculator.class
-Game.class
-EvaluateMove.class
-DraftsMain.class
+MainFolder\DraftsMain.class
+MainFolder\TestMinimax.class
+MainFolder\GreyPiece.class
+MainFolder\TreeNode.class
+MainFolder\CheckersBoard.class
+MainFolder\RedPiece.class
+MainFolder\TestTreeNode.class
+MainFolder\EvaluateMove.class
+MainFolder\Game.class
+MainFolder\MoveCalculator.class
