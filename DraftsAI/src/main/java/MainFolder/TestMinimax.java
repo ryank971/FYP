@@ -1,5 +1,7 @@
 package MainFolder;
 
+import static MainFolder.MoveCalculator.max;
+import static MainFolder.MoveCalculator.min;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +63,61 @@ public class TestMinimax {
            
     }
     
+    public static  int TestAlphaBeta(TestTreeNode node,int depth, Boolean maximizingP,int alpha,int beta){
+       if(depth == 0)
+       {
+           //System.out.println(MoveCalculator.evaluationFucntion(node.data));
+             //node.displayNodeData(node);
+            //System.out.println("");
+            //System.out.println("here");
+            return node.data;
+       }
+       if (maximizingP == true){
+           int bestValueMax = -9999999;
+           for (int i = 0; i<node.children.size();i++){
+               int val = TestAlphaBeta(node.children.get(i),depth-1,false,alpha,beta);
+               if(val > bestValueMax)
+               {
+                   if(depth ==3 )
+                   {
+                       best = node.children.get(i).data;
+                   }
+                   bestValueMax = val;
+
+               }  
+               alpha = Max(alpha,bestValueMax);
+               if(beta <= alpha)
+               {
+                   System.out.println("break at alpha  "+node.data );
+                   //break;
+               }
+              // System.out.println("BestValueMax "+ bestValueMax);
+           }
+           moves.add(bestValueMax);
+           return bestValueMax;
+       }
+       else if (maximizingP == false){
+           int bestValueMin = 9999999;
+           for (int i = 0; i<node.children.size();i++){
+               int val = TestAlphaBeta(node.children.get(i),depth-1,true,alpha,beta);
+               bestValueMin = Min(bestValueMin,val);
+               beta = Min(beta,bestValueMin);
+               if(beta <= alpha)
+               {
+                   System.out.println("break at beta "+node.data );
+                    //break;
+               }
+               //System.out.println("BestValueMin "+ bestValueMin);
+           }
+           return bestValueMin;
+        }
+        else return 99999999;
+       
+           
+    }
+            
+            
+      
     public static int Max(int valueOne,int valueTwo){
         if(valueOne > valueTwo)
         return valueOne;

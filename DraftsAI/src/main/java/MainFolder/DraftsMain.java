@@ -42,7 +42,7 @@ public class DraftsMain {
 //                }
         TestTreeNode Tree = new TestTreeNode(1);
         TestMinmax(Tree);
-        TestMinimax.minimax(Tree, 3,true);
+        System.out.println(TestMinimax.TestAlphaBeta(Tree, 3,true,-9999999,9999999));
         //Tree.traverse(Tree);
         //System.out.println("best move : "+TestMinimax.best);
 ////        for(int move : TestMinimax.moves)
@@ -50,7 +50,7 @@ public class DraftsMain {
 ////            System.out.println(move);
 ////        }
 //        
-        System.out.println("best move = "+TestMinimax.best);
+        //System.out.println("best move = "+TestMinimax.best);
        
         
         
@@ -154,41 +154,41 @@ public class DraftsMain {
     
     
     public static void TestMinmax(TestTreeNode testTree){
-        TestTreeNode Two = new TestTreeNode(2);
+        TestTreeNode Two = new TestTreeNode(200);
         testTree.addChild(Two);
         
-        TestTreeNode three = new TestTreeNode(3);
+        TestTreeNode three = new TestTreeNode(300);
         testTree.addChild(three);
         
-        TestTreeNode six = new TestTreeNode(6);
+        TestTreeNode six = new TestTreeNode(600);
         Two.addChild(six);
-        TestTreeNode seven = new TestTreeNode(7);
+        TestTreeNode seven = new TestTreeNode(700);
         Two.addChild(seven);
         
         
-        TestTreeNode five = new TestTreeNode(5);
+        TestTreeNode five = new TestTreeNode(500);
         three.addChild(five);
-        TestTreeNode nine = new TestTreeNode(9);
+        TestTreeNode nine = new TestTreeNode(900);
         three.addChild(nine);
         
-        six.addChild(10);
-        six.addChild(14);
-        six.addChild(15);
+        six.addChild(3);
+        six.addChild(5);
+        //six.addChild(15);
        // Two.addChild(4);
-        seven.addChild(24);
-        seven.addChild(13);
-        seven.addChild(34);
+        seven.addChild(6);
+        seven.addChild(9);
+        //seven.addChild(34);
         //three.addChild(10);
         
         
-        five.addChild(25);
-        five.addChild(56);
-        five.addChild(35);
+        five.addChild(1);
+        five.addChild(2);
+        //five.addChild(35);
         
         
-        nine.addChild(53);
-        nine.addChild(37);
-        nine.addChild(78);
+        nine.addChild(0);
+        nine.addChild(-1);
+       // nine.addChild(78);
     }
     
     

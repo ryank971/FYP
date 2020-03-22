@@ -17,73 +17,49 @@ import javax.swing.*;
 import java.applet.*;
 import java.awt.Container;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-public class CheckersBoard {
+public class CheckersBoard extends JFrame implements ActionListener, MouseListener {
     public static int rows = 8;
     public static int columns = 8;
     public static Color col1 = Color.BLACK;
     public static Color col2 = Color.WHITE;
     final static int DEPTH_TO_BUILD =6;
     static int  counter = 0;
-    static JFrame checkerBoard = new JFrame();
         
    
 
-public static void main(String[] args) throws InterruptedException {
-    Game game = new Game();
-    game.PrintBoard();
-    System.out.println("");
-    
-    while(!EvaluateMove.GameOver(game)){
-        CreateBoard(game);
-        if (game.turn == 1)
-            {
-              TreeNode Tree = new TreeNode(game.GetBoard());
-              BuildFromNode(game,DEPTH_TO_BUILD,Tree);  
-              MoveCalculator.minimax(Tree,DEPTH_TO_BUILD,true,DEPTH_TO_BUILD,game.turn);
-              String move = EvaluateMove.ReturnMoveString(game, MoveCalculator.MaxMove.data);
-              String moves[]=move.split("-");
-              EvaluateMove.makeMove(game,moves[0] ,moves[1]); 
-            }
-        else
-        {
-//            TreeNode Tree = new TreeNode(game.GetBoard());
-//            BuildFromNode(game,1,Tree);
-//            MoveCalculator.minimax(Tree,1,false,1,game.turn);
-//            String move = EvaluateMove.ReturnMoveString(game, MoveCalculator.MinMove.data);
-//            String moves[]=move.split("-");
-//            EvaluateMove.makeMove(game,moves[0] ,moves[1]);   
-              String moves[] = MoveCalculator.RandomMove(game, game.allPieces(game.turn)).split("-");
-              EvaluateMove.makeMove(game,moves[0] ,moves[1]);
-        }
-        counter++; 
-        TimeUnit.SECONDS.sleep(1);
-        UpdateBoard(game);
-        game.PrintBoard();
-        System.out.println("");
-        //UpdateBoard(game);
+public static void main(String[] args)  throws InterruptedException {
+//    CheckersBoard board = new CheckersBoard();
+//    Game game = new Game();
+//        board.CreateBoard(game);
+//
+//
+//        board.UpdateBoard(game);
+//        game.PrintBoard();
+   CheckersBoard board = new CheckersBoard();
+   board.SimulatePlay();
 
-    }
+    
 }  
 
 
-public static void CreateBoard(Game game){
-    checkerBoard.setSize(800,800);
-    checkerBoard.setTitle("CheckerBoard");
+public  void CreateBoard(Game game){
+    setSize(800,800);
+    setTitle("CheckerBoard");
+    addMouseListener(this);
 }
 
-public static void UpdateBoard(Game game){
-    
-
-    
-    //checkerBoard.revalidate();
-    //checkerBoard.repaint();
-
+public  void UpdateBoard(Game game){
     
     
-    Container pane = checkerBoard.getContentPane();
+    Container pane = getContentPane();
     pane.removeAll();
     pane.setLayout(new GridLayout(rows,columns));
     
@@ -124,8 +100,18 @@ public static void UpdateBoard(Game game){
         }
     }
 
-    checkerBoard.setVisible(true);
+    setVisible(true);
 }
+
+    
+    
+//	public void mousePressed(java.awt.event.MouseEvent evt) {
+//    	int col = (evt.getX()-8) / 100; // 8 is left frame length
+//        int row = (evt.getY()-30) / 100; // 30 is top frame length
+//        JOptionPane.showMessageDialog(null,"hello","Problem",JOptionPane.INFORMATION_MESSAGE);
+//
+//	}
+
 
 public static void BuildFromNode(Game game, int recursiveCalls,TreeNode Tree){
         recursiveCalls--;
@@ -152,5 +138,94 @@ public static int[][] cloneBoard(int[][]board){
         }
         return result;
     }
+
+public  void SimulatePlay() throws InterruptedException{
+    Game game = new Game();
+    game.PrintBoard();
+    System.out.println("");
+    
+    while(!EvaluateMove.GameOver(game)){
+        CreateBoard(game);
+        if (game.turn == 1)
+            {
+//              TreeNode Tree = new TreeNode(game.GetBoard());
+//              BuildFromNode(game,DEPTH_TO_BUILD,Tree);  
+//              MoveCalculator.minimax(Tree,DEPTH_TO_BUILD,true,DEPTH_TO_BUILD,game.turn);
+//              String move = EvaluateMove.ReturnMoveString(game, MoveCalculator.MaxMove.data);
+//              String moves[]=move.split("-");
+//              EvaluateMove.makeMove(game,moves[0] ,moves[1]); 
+
+              MoveCalculator.minimaxTreeGenerationIntegrated(game,8,true,8,game.turn,-9999999,9999999);
+              String moves[]=MoveCalculator.MaxMoveString.split("-");
+              EvaluateMove.makeMove(game,moves[0] ,moves[1]); 
+            }
+        else
+        {
+//            TreeNode Tree = new TreeNode(game.GetBoard());
+//            BuildFromNode(game,6,Tree);
+//            MoveCalculator.minimax(Tree,6,false,6,game.turn);
+//            String move = EvaluateMove.ReturnMoveString(game, MoveCalculator.MinMove.data);
+//            String moves[]=move.split("-");
+//            EvaluateMove.makeMove(game,moves[0] ,moves[1]);   
+              String moves[] = MoveCalculator.RandomMove(game, game.allPieces(game.turn)).split("-");
+              EvaluateMove.makeMove(game,moves[0] ,moves[1]);
+//            TreeNode Tree = new TreeNode(game.GetBoard());
+//            BuildFromNode(game,DEPTH_TO_BUILD,Tree);  
+//            MoveCalculator.alphaBeta(Tree,DEPTH_TO_BUILD,true,DEPTH_TO_BUILD,game.turn,Double.MAX_VALUE,Double.MIN_VALUE);
+//            //MoveCalculator.minimax(Tree,DEPTH_TO_BUILD,true,DEPTH_TO_BUILD,game.turn);
+//            String move = EvaluateMove.ReturnMoveString(game, MoveCalculator.MaxMove.data);
+//            String moves[]=move.split("-");
+//            EvaluateMove.makeMove(game,moves[0] ,moves[1]); 
+        }
+        counter++; 
+        TimeUnit.SECONDS.sleep(1);
+        UpdateBoard(game);
+        game.PrintBoard();
+        System.out.println("");
+        //UpdateBoard(game);
+
+    }
+}
+
+
+        
+        
+    @Override
+    public void actionPerformed(ActionEvent arg0) {
+
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent arg0) {
+        System.out.println("hello");
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent arg0) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent arg0) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent arg0) {
+
+    }
+
+
+    @Override
+    public void mousePressed(MouseEvent arg0) {
+
+    }
+
+
+
+
 }  
+
+
+
 

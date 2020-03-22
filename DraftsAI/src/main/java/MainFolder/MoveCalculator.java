@@ -2,6 +2,7 @@ package MainFolder;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -17,6 +18,9 @@ import java.util.Random;
  */
 public class MoveCalculator {
 static TreeNode MaxMove;
+static String MaxMoveString;
+static String MinMoveString;
+
 static TreeNode MinMove;
 
     
@@ -168,9 +172,167 @@ static TreeNode MinMove;
     }
     
     
+    public static  double alphaBeta(TreeNode node,int depth, Boolean maximizingP,int maxDepth, int turn,double alpha,double beta){
 
+       if(EvaluateMove.win(node.data,turn) == true){
+           return 999999;
+       }
+       else if(EvaluateMove.lose(node.data,turn) == true){
+           return -99999;
+       }
+        
+       else if(depth == 0)
+       {
+           return MoveCalculator.evaluationFucntion(node.data);     
+       }
+       
+       if (maximizingP == true){
+           double bestValueMax = -9999999;
+           for (int i = 0; i<node.children.size();i++){
+               double val = minimax(node.children.get(i),depth-1,false,maxDepth,turn);
+               if(val > bestValueMax)
+               {
+                   bestValueMax = val;
+                   if (depth ==maxDepth){
+                      MaxMove = node.children.get(i);
+                   }
+               }
+               alpha = max(alpha,val);
+               if(beta <= alpha)
+                   break;
+           }
+
+           return bestValueMax;
+       }
+       else if (maximizingP == false){
+           double bestValueMin = 9999999;
+           for (int i = 0; i<node.children.size();i++){
+               double val = minimax(node.children.get(i),depth-1,true,maxDepth,turn);
+               if (val < bestValueMin)
+               {
+                    bestValueMin = val;
+                    if(depth == maxDepth)
+                    {
+                        MinMove = node.children.get(i);
+                    }
+               }
+               beta = min(beta,val);
+               if(beta <= alpha)
+                    break;
+           }
+
+           return bestValueMin;
+        }
+        else return 99999999;
+       
+           
+    }
+    
+    
+    
+    
+       public static  double minimaxTreeGenerationIntegrated(Game game,int depth, Boolean maximizingP,int maxDepth, int turn,double alpha,double beta){
+
+       if(EvaluateMove.win(game.GetBoard(),turn) == true){
+           return 999999;
+       }
+       else if(EvaluateMove.lose(game.GetBoard(),turn) == true){
+           return -99999;
+       }
+        
+       else if(depth == 0)
+       {
+           return MoveCalculator.evaluationFucntion(game.GetBoard());     
+       }
+       List<String> validMoves  = MoveCalculator.listOfMoves(game, game.allPieces(game.turn));
+       if (maximizingP == true){
+           double bestValueMax = -9999999;
+           
+           for (int i = 0; i< validMoves.size() ;i++){
+               
+               Game Temp = BuildFromNode(game,validMoves.get(i));
+               double val = minimaxTreeGenerationIntegrated(Temp,depth-1,false,maxDepth,turn,alpha,beta);
+               if(val > bestValueMax)
+               {
+                   bestValueMax = val;
+                   if (depth ==maxDepth){
+                      MaxMoveString = validMoves.get(i);
+                   }
+               }
+               alpha = max(alpha,bestValueMax);
+               if(beta <= alpha)
+                   break;
+           }
+
+           return bestValueMax;
+       }
+       else if (maximizingP == false){
+           double bestValueMin = 9999999;
+           for (int i = 0; i<validMoves.size();i++){
+               
+               Game Temp = BuildFromNode(game,validMoves.get(i));
+               double val = minimaxTreeGenerationIntegrated(Temp,depth-1,true,maxDepth,turn,alpha,beta);
+               if (val < bestValueMin)
+               {
+                    bestValueMin = val;
+                    if(depth == maxDepth)
+                    {
+                        MinMoveString = validMoves.get(i);
+                    }
+               }
+               beta = min(beta,bestValueMin);
+               if(beta <= alpha)
+                    break;
+           }
+
+           return bestValueMin;
+        }
+        else return 99999999;
+       
+           
+    }
+       
+       
+    
+    
+    static public double  max(double one,double two)
+    {
+        if(one > two)
+        return one;
+        else return two;
+    }
+    
+    static public double  min(double one,double two)
+    {
+        if(one < two)
+        return one;
+        else return two;
+    }
+    
+    
+    
+    
+        public static Game BuildFromNode(Game game,String move){
+                int[][] copyBoard = cloneBoard(game.board);
+                Game CopyGame = new Game(copyBoard,game.turn);
+                    int[][] temp = cloneBoard(CopyGame.board);
+                    Game Temp = new Game(temp,game.turn);
+                    String moves[] = move.split("-");
+                    EvaluateMove.makeMove(Temp,moves[0] ,moves[1]);  
+                    return Temp;
+    }
+    
+ 
+    
+    public static int[][] cloneBoard(int[][]board)
+    {
+     
+                final int[][] result = new int[board.length][];
+    for (int i = 0; i < board.length; i++) {
+        result[i] = Arrays.copyOf(board[i], board[i].length);
+    }
+    return result;
+    }
     
     
 }
-
-
