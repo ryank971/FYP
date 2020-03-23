@@ -56,6 +56,36 @@ static TreeNode MinMove;
 
     }
     
+        public static List listOfMovesFromPosition(Game game,List<String> list,String current) {
+        List<String> validMoves = new ArrayList<String>(); 
+            //System.out.println("Current "+list.get(i));
+             String[] CurrentS = current.split(",");
+             int size = CurrentS.length;
+             int[] Current = new int[size];
+             for (int a = 0; a < size; a++) {
+                 Current[a] = Integer.parseInt(CurrentS[a]);
+             }
+            for (int r = 0; r < 8; r++) {
+                for (int c = 0; c < 8; c++) {
+                    
+                    int[] move = {r,c};
+//                    System.out.println("----EVALUATING----");
+//                    System.out.println("FROM "+Current[0]+","+Current[1]);
+//                    System.out.println("Too "+move[0]+","+move[1]);
+//                    System.out.println("------------------");
+                   if(EvaluateMove.isValidMove(game, Current, move)==true)
+                   {
+                       validMoves.add(current+"-"+r+","+c);
+                       //System.out.println(r+","+c +" is a valid move from "+ Current[0]+","+Current[1]);
+                   }
+                }
+
+            }
+        
+        return validMoves;
+
+    }
+    
     public static String RandomMove(Game game,List<String> list) {
         List<String> validMoves = listOfMoves(game,list); 
         Random rand = new Random();

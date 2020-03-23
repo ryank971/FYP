@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class Game {
 
-    int turn = 1;
+    volatile int turn = 1;
     public int[][] board;        
     public Game(int[][] copyBoard, int copyTurn){
         this.board = copyBoard;

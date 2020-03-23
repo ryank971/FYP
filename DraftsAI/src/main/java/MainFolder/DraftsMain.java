@@ -79,7 +79,6 @@ public class DraftsMain {
                         BuildFromNode(game,DEPTH_TO_BUILD,Tree);
 
                         System.out.println("Possible moves : "+ MoveCalculator.listOfMoves(game, game.allPieces(game.turn)));
-                        //Tree.traverse(Tree);
                         MoveCalculator.minimax(Tree,DEPTH_TO_BUILD,true,DEPTH_TO_BUILD,game.turn);
                        
                         String move = EvaluateMove.ReturnMoveString(game, MoveCalculator.MaxMove.data);
