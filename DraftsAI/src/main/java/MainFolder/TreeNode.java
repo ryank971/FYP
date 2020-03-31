@@ -36,16 +36,12 @@ public class TreeNode {
         node.parent = this.parent;
         this.children.add(node);
     }
-    
-
-    
     public List<TreeNode> getChildren(){
         return children;
     }
-    
     public void displayNodeData(TreeNode node){
             
-        System.out.println("this Node has "+node.children.size()+" children"+"with a value of: "+ MoveCalculator.evaluationFucntion(node.data));
+        //System.out.println("this Node has "+node.children.size()+" children"+"with a value of: "+ MoveCalculator.evaluationFucntion(node.data));
                             for (int[] x : node.data) {
                         for (int y : x) {
                             System.out.print(y + " ");
@@ -53,7 +49,6 @@ public class TreeNode {
                         System.out.println();
         }
     }   
-    
     public void traverse(TreeNode node){
         
         if(node !=null)
@@ -65,13 +60,5 @@ public class TreeNode {
             }
         }
     }
-
-    //public TreeNode<T> removeChild(T data)
-    
-    //public TreeNode<T> findChild(T data)
-    
-    //
-    
-    // other features ...
 
 }

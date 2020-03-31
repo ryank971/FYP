@@ -25,7 +25,7 @@ public class JUnitTest {
     //Testing a double jump going (+2,+2),(+2,-2)
     @Test
     public void testDoubleJumpV1() {
-        Game game = new Game();
+        Board game = new Board();
         game.board = new int[][]{
         {0, 1, 0, 1, 0, 1, 0, 1},
         {1, 0, 1, 0, 1, 0, 1, 0},
@@ -38,7 +38,7 @@ public class JUnitTest {
         };
         int[] current = {2,3};
         int[] move={6,3};
-        System.out.println("Possible moves : "+ MoveCalculator.listOfMoves(game, game.allPieces(game.turn)));
+        System.out.println("Possible moves : "+ MoveCalculator.listOfMoves(game, game.allGamePieces(game.turn)));
         TreeNode Tree = new TreeNode(game.GetBoard());
        
         BuildFromNode(game,1,Tree);
@@ -51,7 +51,7 @@ public class JUnitTest {
     //Testing a double jump going (+2,+2),(+2,+2)
     @Test
     public void testDoubleJumpV2() {
-        Game game = new Game();
+        Board game = new Board();
         game.board = new int[][]{
         {0, 1, 0, 1, 0, 1, 0, 1},
         {1, 0, 1, 0, 1, 0, 1, 0},
@@ -64,7 +64,7 @@ public class JUnitTest {
         };
         int[] current = {2,3};
         int[] move={6,7};
-        System.out.println("Possible moves : "+ MoveCalculator.listOfMoves(game, game.allPieces(game.turn)));
+        System.out.println("Possible moves : "+ MoveCalculator.listOfMoves(game, game.allGamePieces(game.turn)));
         assertTrue(EvaluateMove.isValidMove(game,current,move));
     }
     
@@ -72,7 +72,7 @@ public class JUnitTest {
     //Testing a double jump going (+2,+2),(+2,+2)
     @Test
     public void testDoubleJumpV3() {
-        Game game = new Game();
+        Board game = new Board();
         game.turn = 2;
         game.board = new int[][]{
         {0, 1, 0, 1, 0, 1, 0, 1},
@@ -86,7 +86,7 @@ public class JUnitTest {
         };
         int[] current = {5,6};
         int[] move={1,2};
-        System.out.println("Possible moves : "+ MoveCalculator.listOfMoves(game, game.allPieces(game.turn)));
+        System.out.println("Possible moves : "+ MoveCalculator.listOfMoves(game, game.allGamePieces(game.turn)));
         assertTrue(EvaluateMove.isValidMove(game,current,move));
     }
     
@@ -94,7 +94,7 @@ public class JUnitTest {
     //Testing a double jump going (+2,+2),(+2,+2)
     @Test
     public void testDoubleJumpV4() {
-        Game game = new Game();
+        Board game = new Board();
         game.board = new int[][]{
         {0, 0, 0, 0, 0, 0, 0, 0},
         {4, 0, 0, 0, 0, 0, 0, 0},
@@ -107,7 +107,7 @@ public class JUnitTest {
         };
 //        int[] current = {1,0};
 //        int[] move={0,1};
-        System.out.println("Possible moves : "+ MoveCalculator.listOfMoves(game, game.allPieces(game.turn)));
+        System.out.println("Possible moves : "+ MoveCalculator.listOfMoves(game, game.allGamePieces(game.turn)));
         TreeNode Tree = new TreeNode(game.GetBoard());
         BuildFromNode(game,DEPTH_TO_BUILD,Tree);
         MoveCalculator.minimax(Tree,DEPTH_TO_BUILD,true,DEPTH_TO_BUILD,1);             
@@ -118,7 +118,7 @@ public class JUnitTest {
     
         @Test
     public void testDoubleJumpV5() {
-        Game game = new Game();
+        Board game = new Board();
         game.board = new int[][]{
         {0, 0, 0, 0, 0, 0, 0, 0},
         {4, 0, 0, 0, 0, 0, 0, 0},
@@ -131,7 +131,7 @@ public class JUnitTest {
         };
 //        int[] current = {1,0};
 //        int[] move={0,1};
-        System.out.println("Possible moves : "+ MoveCalculator.listOfMoves(game, game.allPieces(game.turn)));
+        System.out.println("Possible moves : "+ MoveCalculator.listOfMoves(game, game.allGamePieces(game.turn)));
         TreeNode Tree = new TreeNode(game.GetBoard());
         BuildFromNode(game,DEPTH_TO_BUILD,Tree);
         MoveCalculator.minimax(Tree,DEPTH_TO_BUILD,true,DEPTH_TO_BUILD,1);             
@@ -146,7 +146,7 @@ public class JUnitTest {
     
     @Test
     public void testEndGameScenario1(){
-        Game game = new Game();
+        Board game = new Board();
         game.board = new int[][]{
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
@@ -157,13 +157,13 @@ public class JUnitTest {
         {0, 2, 0, 0, 0, 2, 0, 2},
         {1, 0, 2, 0, 2, 0, 2, 0}
         };
-        System.out.println("Possible moves : "+ MoveCalculator.listOfMoves(game, game.allPieces(game.turn)).size());
+        System.out.println("Possible moves : "+ MoveCalculator.listOfMoves(game, game.allGamePieces(game.turn)).size());
         assertTrue(EvaluateMove.GameOver(game));
     }
     
     @Test
     public void testEndGameScenario2(){
-        Game game = new Game();
+        Board game = new Board();
         game.board = new int[][]{
         {0, 0, 0, 0, 0, 0, 0, 0},
         {3, 0, 0, 2, 0, 0, 0, 0},
@@ -174,7 +174,7 @@ public class JUnitTest {
         {0, 0, 0, 1, 0, 1, 0, 1},
         {3, 0, 0, 0, 3, 0, 0, 0}
         };
-        System.out.println("Possible moves : "+ MoveCalculator.listOfMoves(game, game.allPieces(game.turn)).size());
+        System.out.println("Possible moves : "+ MoveCalculator.listOfMoves(game, game.allGamePieces(game.turn)).size());
         assertFalse(EvaluateMove.GameOver(game));
     }  
     
