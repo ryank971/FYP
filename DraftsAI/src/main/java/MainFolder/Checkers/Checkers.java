@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package MainFolder;
+package MainFolder.Checkers;
 
 
+import MainFolder.Board;
+import MainFolder.IGame;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,7 @@ import java.util.List;
  */
 public class Checkers implements IGame {
 
+    
     @Override
     public List validMoves(Board CheckerBoard) {
         List<String> validMoves = new ArrayList<String>();

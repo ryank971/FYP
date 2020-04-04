@@ -5,14 +5,15 @@
  */
 package MainFolder.GUI;
 
-import MainFolder.AlphaBetaAgent;
+import MainFolder.Checkers.AlphaBetaAgent;
 import MainFolder.Board;
-import MainFolder.Checkers;
-import MainFolder.GUI.CheckersBoard;
+import MainFolder.Checkers.Checkers;
 import MainFolder.GUI.GreyPiece;
 import MainFolder.GUI.RedPiece;
-import MainFolder.MinimaxAgent;
-import MainFolder.RandomAgent;
+import MainFolder.Checkers.MinimaxAgent;
+import MainFolder.Checkers.RandomAgent;
+import MainFolder.Reversi.RandomAgentR;
+import MainFolder.Reversi.Reversi;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.GridLayout;
@@ -48,101 +49,170 @@ public class UserInterface extends JFrame implements ActionListener, MouseListen
     static RandomAgent randomAgent = new RandomAgent();
     static MinimaxAgent minimaxAgent = new MinimaxAgent();
     static AlphaBetaAgent alphaBetaAgent = new AlphaBetaAgent();
-    static Board checkerBoard = new Board();
+    static Board Board = new Board();
+    static Reversi reversi = new Reversi();
     static Checkers checkers = new Checkers();
     static UserInterface Gui = new UserInterface();
+    static RandomAgentR reversiRandom = new RandomAgentR();
 
     public static void main(String[] args) throws InterruptedException {
-
+        //RandomVRandomReversi();
+        HumanVHumanReversi();
         //ShowOption();
-        RandomVHuman();
-
+        //Board.setReversiBoard();
+        //reversiRandom.makeMove(Board);
+        //RandomVHuman();
     }
 
     public static void RandomVRandom() throws InterruptedException {
 
-        while (!checkers.isOver(checkerBoard)) {
-            Gui.CreateBoard(checkerBoard);
-            if (checkerBoard.turn == 1) {
-                randomAgent.makeMove(checkerBoard);
+        while (!checkers.isOver(Board)) {
+            Gui.CreateBoard(Board);
+            if (Board.turn == 1) {
+                randomAgent.makeMove(Board);
                 Thread.sleep(1000);
             } else {
-                randomAgent.makeMove(checkerBoard);
+                randomAgent.makeMove(Board);
                 Thread.sleep(1000);
 
             }
             counter++;
-            Gui.UpdateBoard(checkerBoard);
+            Gui.UpdateBoard(Board);
         }
     }
 
     public static void AlphaBetaVHuman() throws InterruptedException {
 
-        while (!checkers.isOver(checkerBoard)) {
-            Gui.CreateBoard(checkerBoard);
-            if (checkerBoard.turn == 1) {
-                alphaBetaAgent.makeMove(checkerBoard);
+        while (!checkers.isOver(Board)) {
+            Gui.CreateBoard(Board);
+            if (Board.turn == 1) {
+                alphaBetaAgent.makeMove(Board);
                 Thread.sleep(1000);
             } else {
-                while (checkerBoard.turn == 2) {
+                while (Board.turn == 2) {
                     Thread.sleep(1000);
                 }
 
             }
             counter++;
-            Gui.UpdateBoard(checkerBoard);
+            Gui.UpdateBoard(Board);
         }
     }
-    
-        public static void RandomVHuman() throws InterruptedException {
 
-        while (!checkers.isOver(checkerBoard)) {
-            Gui.CreateBoard(checkerBoard);
-            if (checkerBoard.turn == 1) {
-                randomAgent.makeMove(checkerBoard);
+    public static void RandomVHuman() throws InterruptedException {
+
+        while (!checkers.isOver(Board)) {
+            Gui.CreateBoard(Board);
+            if (Board.turn == 1) {
+                randomAgent.makeMove(Board);
                 Thread.sleep(1000);
             } else {
-                while (checkerBoard.turn == 2) {
+                while (Board.turn == 2) {
                     Thread.sleep(1000);
                 }
 
             }
             counter++;
-            Gui.UpdateBoard(checkerBoard);
+            Gui.UpdateBoard(Board);
+        }
+    }
+
+    public static void RandomVHumanReversi() throws InterruptedException {
+        Board.setReversiBoard();
+        while (!reversi.isOver(Board)) {
+            Gui.CreateBoard(Board);
+            if (Board.turn == 1) {
+                reversiRandom.makeMove(Board);
+                Thread.sleep(1000);
+            } else {
+                while (Board.turn == 2) {
+                    Thread.sleep(1000);
+                }
+
+            }
+            counter++;
+            Gui.UpdateBoard(Board);
+        }
+    }
+
+    public static void HumanVHumanReversi() throws InterruptedException {
+        Board.setReversiBoard();
+        while (!reversi.isOver(Board)) {
+            List<String> moves = reversi.validMoves(Board);
+            Gui.CreateBoard(Board);
+            Gui.UpdateBoard(Board);
+            if (Board.turn == 1) {
+                System.out.println("PLAYER 1 GO!");
+                for (String move : moves) {
+                    System.out.println(move);
+                }
+                while (Board.turn == 1) {
+                    Thread.sleep(1000);
+                }
+                Thread.sleep(1000);
+            } else {
+                System.out.println("PLAYER 2 GO!");
+                for (String move : moves) {
+                    System.out.println(move);
+                }
+                while (Board.turn == 2) {
+                    Thread.sleep(1000);
+                }
+
+            }
+            counter++;
+            Gui.UpdateBoard(Board);
+        }
+    }
+
+    public static void RandomVRandomReversi() throws InterruptedException {
+        Board.setReversiBoard();
+        while (!reversi.isOver(Board)) {
+            Gui.CreateBoard(Board);
+            if (Board.turn == 1) {
+                reversiRandom.makeMove(Board);
+                Thread.sleep(1000);
+            } else {
+                reversiRandom.makeMove(Board);
+                Thread.sleep(1000);
+
+            }
+            counter++;
+            Gui.UpdateBoard(Board);
         }
     }
 
     public static void MinimaxVRandom() throws InterruptedException {
 
-        while (!checkers.isOver(checkerBoard)) {
-            Gui.CreateBoard(checkerBoard);
-            if (checkerBoard.turn == 1) {
-                minimaxAgent.makeMove(checkerBoard);
+        while (!checkers.isOver(Board)) {
+            Gui.CreateBoard(Board);
+            if (Board.turn == 1) {
+                minimaxAgent.makeMove(Board);
                 Thread.sleep(2000);
             } else {
-                randomAgent.makeMove(checkerBoard);
+                randomAgent.makeMove(Board);
                 Thread.sleep(1000);
 
             }
             counter++;
-            Gui.UpdateBoard(checkerBoard);
+            Gui.UpdateBoard(Board);
         }
     }
 
     public static void alphaBetaVRandom() throws InterruptedException {
 
-        while (!checkers.isOver(checkerBoard)) {
-            Gui.CreateBoard(checkerBoard);
-            if (checkerBoard.turn == 1) {
-                alphaBetaAgent.makeMove(checkerBoard);
+        while (!checkers.isOver(Board)) {
+            Gui.CreateBoard(Board);
+            if (Board.turn == 1) {
+                alphaBetaAgent.makeMove(Board);
                 Thread.sleep(2000);
             } else {
-                randomAgent.makeMove(checkerBoard);
+                randomAgent.makeMove(Board);
                 Thread.sleep(1000);
 
             }
             counter++;
-            Gui.UpdateBoard(checkerBoard);
+            Gui.UpdateBoard(Board);
         }
     }
 
@@ -229,21 +299,38 @@ public class UserInterface extends JFrame implements ActionListener, MouseListen
 
     }
 
+//    @Override
+//    public void mouseClicked(MouseEvent e) {
+//        if (Board.turn == 2) {
+//            int x = e.getX();
+//            int y = e.getY();
+//            if (Current != null && !(AvailableMoves.isEmpty())) {
+//                Move = new int[]{y / (getContentPane().getSize().width / 8), x / (getContentPane().getSize().height / 8)};
+//                makeMove(Board, Current[0] + "," + Current[1], Move[0] + "," + Move[1]);
+//            }
+//
+//            String move = y / (getContentPane().getSize().width / 8) + "," + x / (getContentPane().getSize().height / 8);
+//            Current = new int[]{y / (getContentPane().getSize().width / 8), x / (getContentPane().getSize().height / 8)};
+//            AvailableMoves = checkers.validMovesFromPiece(Board, move);
+//            UpdateBoard(Board);
+//        }
+//    }
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (checkerBoard.turn == 2) {
-            int x = e.getX();
-            int y = e.getY();
-            if (Current != null && !(AvailableMoves.isEmpty())) {
-                Move = new int[]{y / (getContentPane().getSize().width / 8), x / (getContentPane().getSize().height / 8)};
-                makeMove(checkerBoard, Current[0] + "," + Current[1], Move[0] + "," + Move[1]);
-            }
 
-            String move = y / (getContentPane().getSize().width / 8) + "," + x / (getContentPane().getSize().height / 8);
-            Current = new int[]{y / (getContentPane().getSize().width / 8), x / (getContentPane().getSize().height / 8)};
-            AvailableMoves = checkers.validMovesFromPiece(checkerBoard, move);
-            UpdateBoard(checkerBoard);
+        int x = e.getX();
+        int y = e.getY();
+        Move = new int[]{y / (getContentPane().getSize().width / 8), x / (getContentPane().getSize().height / 8)};
+        List<String> validMoves = reversi.validMoves(Board);
+        System.out.println(Move[0]+","+Move[1]);
+        for (String move : validMoves) {
+            
+            if (move.equals(Move[0]+","+Move[1])) {
+                System.out.println(Board.turn + " made move = " + Move);
+                makeMove(Board, Move[0] + "," + Move[1]);
+            }
         }
+
     }
 
     @Override
@@ -265,7 +352,7 @@ public class UserInterface extends JFrame implements ActionListener, MouseListen
     public void mousePressed(MouseEvent arg0) {
 
     }
-    
+
     public static void makeMove(Board game, String current, String move) {
         String[] CurrentS = current.split(",");
         String[] MoveS = move.split(",");
@@ -278,70 +365,102 @@ public class UserInterface extends JFrame implements ActionListener, MouseListen
             Move[i] = Integer.parseInt(MoveS[i]);
 
         }
-        
-        
-        
+
         if (checkers.isValidMove(game, Current, Move) == true) {
-            if(checkers.isDoubleJump(game, Current, Move)){  
+            if (checkers.isDoubleJump(game, Current, Move)) {
                 int turn = game.turn;
-            int[] middleMove = checkers.ReturnDoubleJump(game, Current, Move);
-            minimaxAgent.SimulatePlay(game, Current[0] + "," + Current[1], middleMove[0] + "," + middleMove[1]);
-            game.turn = turn;
-            minimaxAgent.SimulatePlay(game, middleMove[0] + "," + middleMove[1], Move[0] + "," + Move[1]);
-                
-            }
-            else{
-            
+                int[] middleMove = checkers.ReturnDoubleJump(game, Current, Move);
+                minimaxAgent.SimulatePlay(game, Current[0] + "," + Current[1], middleMove[0] + "," + middleMove[1]);
+                game.turn = turn;
+                minimaxAgent.SimulatePlay(game, middleMove[0] + "," + middleMove[1], Move[0] + "," + Move[1]);
+
+            } else {
+
                 if (Move[0] == Current[0] + 2 && Move[1] == Current[1] + 2) {
                     game.board[Current[0] + 1][Current[1] + 1] = 0;
-                }
-                else if (Move[0] == Current[0] + 2 && Move[1] == Current[1] - 2) {
-                   game.board[Current[0] + 1][Current[1] - 1] = 0;
-                }
-                else if (Move[0] == Current[0] - 2 && Move[1] == Current[1] + 2) {
+                } else if (Move[0] == Current[0] + 2 && Move[1] == Current[1] - 2) {
+                    game.board[Current[0] + 1][Current[1] - 1] = 0;
+                } else if (Move[0] == Current[0] - 2 && Move[1] == Current[1] + 2) {
                     game.board[Current[0] - 1][Current[1] + 1] = 0;
-                }
-                else if (Move[0] == Current[0] - 2 && Move[1] == Current[1] - 2) {
+                } else if (Move[0] == Current[0] - 2 && Move[1] == Current[1] - 2) {
                     game.board[Current[0] - 1][Current[1] - 1] = 0;
                 }
 
-
-
-                if(game.turn == 1)
-                {    
-                    if(Move[0]== 7)
-                    {
-                    game.board[Move[0]][Move[1]] = game.turn+2;
-                    game.board[Current[0]][Current[1]] = 0;
+                if (game.turn == 1) {
+                    if (Move[0] == 7) {
+                        game.board[Move[0]][Move[1]] = game.turn + 2;
+                        game.board[Current[0]][Current[1]] = 0;
+                    } else {
+                        game.board[Move[0]][Move[1]] = game.board[Current[0]][Current[1]];
+                        game.board[Current[0]][Current[1]] = 0;
                     }
-                    else
-                    {
-                    game.board[Move[0]][Move[1]] = game.board[Current[0]][Current[1]];
-                    game.board[Current[0]][Current[1]] = 0;
-                    }
-                }
-                else if(game.turn == 2)
-                {
-                    if(Move[0] == 0){
-                    game.board[Move[0]][Move[1]] = game.turn+2;
-                    game.board[Current[0]][Current[1]] = 0;
-                    }
-                    else
-                    {
-                    game.board[Move[0]][Move[1]] = game.board[Current[0]][Current[1]];
-                    game.board[Current[0]][Current[1]] = 0;
+                } else if (game.turn == 2) {
+                    if (Move[0] == 0) {
+                        game.board[Move[0]][Move[1]] = game.turn + 2;
+                        game.board[Current[0]][Current[1]] = 0;
+                    } else {
+                        game.board[Move[0]][Move[1]] = game.board[Current[0]][Current[1]];
+                        game.board[Current[0]][Current[1]] = 0;
                     }
 
                 }
 
-
-
-
-                if(game.turn==1) {
+                if (game.turn == 1) {
                     game.turn = 2;
                 } else {
                     game.turn = 1;
                 }
+            }
+        }
+
+    }
+
+    public static void makeMove(Board ReversiBoard, String move) {
+
+        int row = Integer.parseInt(move.split(",")[0]);
+        int col = Integer.parseInt(move.split(",")[1]);
+
+        ReversiBoard.board[row][col] = ReversiBoard.turn;
+
+        ImplementMove(ReversiBoard, -1, -1, row, col);
+        ImplementMove(ReversiBoard, -1, 0, row, col);
+        ImplementMove(ReversiBoard, -1, 1, row, col);
+
+        ImplementMove(ReversiBoard, 0, -1, row, col);
+        ImplementMove(ReversiBoard, 0, 1, row, col);
+
+        ImplementMove(ReversiBoard, 1, -1, row, col);
+        ImplementMove(ReversiBoard, 1, 0, row, col);
+        ImplementMove(ReversiBoard, 1, 1, row, col);
+
+        if (ReversiBoard.turn == 1) {
+            ReversiBoard.turn = 2;
+        } else {
+            ReversiBoard.turn = 1;
+        }
+
+    }
+
+    public static boolean ImplementMove(Board ReversiBoard, int directionRow, int directionCol, int row, int column) {
+        if ((row + directionRow) < 0 || (row + directionRow > 7)) {
+            return false;
+        }
+
+        if ((column + directionCol < 0) || (column + directionCol > 7)) {
+            return false;
+        }
+        if (ReversiBoard.board[row + directionRow][column + directionCol] == 0) {
+            return false;
+        }
+        if (ReversiBoard.board[row + directionRow][column + directionCol] == ReversiBoard.turn) {
+            return true;
+        } else {
+            if (ImplementMove(ReversiBoard, directionRow, directionCol, row + directionRow, column + directionCol)) {
+                ReversiBoard.board[row + directionRow][column + directionCol] = ReversiBoard.turn;
+                return true;
+
+            } else {
+                return false;
             }
         }
 
