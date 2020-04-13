@@ -77,6 +77,7 @@ public class Checkers implements IGame {
             for (int c = 0; c < 8; c++) {
                 int[] move = {r, c};
                 if (isValidMove(game, Current, move) == true) {
+                    System.out.println(postion + "-" + r + "," + c);
                     validMoves.add(postion + "-" + r + "," + c);
                 }
             }

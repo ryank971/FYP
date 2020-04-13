@@ -23,14 +23,11 @@ public class RandomAgentR implements IAgent {
     public void makeMove(Board ReversiBoard) {
 
         List<String> validMoves = reversiRules.validMoves(ReversiBoard);
-        for(String move : validMoves){
-            System.out.println("potential move  = " + move);
-        }
+
         if (!validMoves.isEmpty()) {
             Random rand = new Random();
             int a = rand.nextInt(validMoves.size());
             String Move = validMoves.get(a);
-            System.out.println("MOVE PICKED FOR " + ReversiBoard.turn + " = " + Move);
             int row = Integer.parseInt(Move.split(",")[0]);
             int col = Integer.parseInt(Move.split(",")[1]);
             
