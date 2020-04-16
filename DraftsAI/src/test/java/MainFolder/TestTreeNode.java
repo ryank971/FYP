@@ -70,12 +70,6 @@ System.out.println("Node "+ node.data+" has "+node.children.size()+" children");
         }
     }
 
-    //public TreeNode<T> removeChild(T data)
-    
-    //public TreeNode<T> findChild(T data)
-    
-    //
-    
-    // other features ...
+
 
 }

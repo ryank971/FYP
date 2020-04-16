@@ -1,6 +1,5 @@
 package MainFolder;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +8,6 @@ import java.util.List;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Ryan Kelly
@@ -17,23 +15,25 @@ import java.util.List;
 public class Board {
 
     public volatile int turn = 1;
-    public int[][] board;        
-    public Board(int[][] copyBoard, int copyTurn){
+    public int[][] board;
+
+    public Board(int[][] copyBoard, int copyTurn) {
         this.board = copyBoard;
         this.turn = copyTurn;
     }
-    public Board(){
+
+    public Board() {
         this.board = new int[][]{
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0}
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0}
         };
-        
+
 //         this.board = new int[][]{
 //        {0, 1, 0, 1, 0, 1, 0, 1},
 //        {1, 0, 1, 0, 1, 0, 1, 0},
@@ -44,8 +44,6 @@ public class Board {
 //        {0, 2, 0, 2, 0, 2, 0, 2},
 //        {2, 0, 2, 0, 2, 0, 2, 0}
 //        };
-        
-        
         this.turn = turn;
 
     }
@@ -53,9 +51,9 @@ public class Board {
     public void setBoard(int[][] board) {
         this.board = board;
     }
-    
-    public void setCheckerBoard(){
-       this.board = new int[][]{
+
+    public void setCheckerBoard() {
+        this.board = new int[][]{
         {0, 1, 0, 1, 0, 1, 0, 1},
         {1, 0, 1, 0, 1, 0, 1, 0},
         {0, 1, 0, 1, 0, 1, 0, 1},
@@ -66,21 +64,32 @@ public class Board {
         {2, 0, 2, 0, 2, 0, 2, 0}
         };
     }
-    
-        public void setReversiBoard(){
-       this.board = new int[][]{
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 2, 1, 0, 0, 0},
-        {0, 0, 0, 1, 2, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0}
+
+    public void setReversiBoard() {
+        this.board = new int[][]{
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 2, 1, 0, 0, 0},
+            {0, 0, 0, 1, 2, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0}
         };
     }
-    
 
+    public void setConnect4Board() {
+        this.board = new int[][]{
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0}
+        };
+    }
 
     public void PrintGame() {
         for (int[] x : board) {
@@ -94,25 +103,21 @@ public class Board {
     public int[][] GetBoard() {
         return board;
     }
-    
-    public List allGamePieces(int player)
-    {
-        List<String> list = new ArrayList<String>(); 
-        
-        for (int row = 0; row < 8; row++) { 
-            for (int col = 0; col < 8; col++) { 
+
+    public List allGamePieces(int player) {
+        List<String> list = new ArrayList<String>();
+
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
                 //System.out.println("row = "+row +" Column = "+col);
-                if(board[row][col] == player || board[row][col] == player +2)
-                list.add(row+","+col);
+                if (board[row][col] == player || board[row][col] == player + 2) {
+                    list.add(row + "," + col);
+                }
             }
 
-
-
         }
-        
+
         return list;
     }
-
-   
 
 }
