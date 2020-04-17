@@ -18,16 +18,23 @@ import MainFolder.Agent;
 public class MinimaxAgent implements Agent {
 
     Checkers checkerRules = new Checkers();
-
+    public static int Depth;
     static String MaxMoveString;
     static String MinMoveString;
+    public static Boolean PlayingFor;
+    public static String BestMove;
 
     @Override
     public void makeMove(Board CheckerBoard) {
 
-        minimax(CheckerBoard, 5, true, 5, CheckerBoard.turn);
-        String current = MaxMoveString.split("-")[0];
-        String move = MaxMoveString.split("-")[1];
+        minimax(CheckerBoard, Depth, PlayingFor, Depth, CheckerBoard.turn);
+        if (PlayingFor == false) {
+            BestMove = MinMoveString;
+        } else {
+            BestMove = MaxMoveString;
+        }
+        String current = BestMove.split("-")[0];
+        String move = BestMove.split("-")[1];
         String[] CurrentS = current.split(",");
         String[] MoveS = move.split(",");
 
@@ -277,8 +284,8 @@ public class MinimaxAgent implements Agent {
             return two;
         }
     }
-    
-        public static int[] ReturnDoubleJump(Board CheckerBoard, int[] Current, int[] Move) {
+
+    public static int[] ReturnDoubleJump(Board CheckerBoard, int[] Current, int[] Move) {
         for (int i = -2; i <= 2; i += 4) {
             for (int j = 2; j >= -2; j -= 4) {
                 int[] newMove = {Move[0] - i, Move[1] + j};
@@ -296,6 +303,5 @@ public class MinimaxAgent implements Agent {
         return null;
 
     }
-        
 
 }

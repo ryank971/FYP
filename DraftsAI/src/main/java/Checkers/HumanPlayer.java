@@ -15,8 +15,9 @@ import MainFolder.Agent;
 public class HumanPlayer {
 
     static Checkers checkers = new Checkers();
-
+    public static  String BestMove;
     public static Boolean makeMove(Board game, String current, String move) {
+        BestMove = current+"-"+move;
         String[] CurrentS = current.split(",");
         String[] MoveS = move.split(",");
 

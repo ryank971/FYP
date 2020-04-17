@@ -19,13 +19,21 @@ public class AlphaBetaConnectFour implements Agent {
     Connect4 Connect4Rules = new Connect4();
     static String MaxMoveString;
     static String MinMoveString;
+    public static Boolean PlayingFor;
+    public static String BestMove;
+    public static int Depth;
 
     @Override
     public void makeMove(Board connect4Board) {
-        System.out.println(evaluationFucntion(connect4Board.GetBoard()));
-        alphaBeta(connect4Board, 8, true, 8, connect4Board.turn, -9999999, 9999999);
-        int row = Integer.parseInt(MaxMoveString.split(",")[0]);
-        int col = Integer.parseInt(MaxMoveString.split(",")[1]);
+
+        alphaBeta(connect4Board, Depth, PlayingFor, Depth, connect4Board.turn, -9999999, 9999999);
+        if (PlayingFor == false) {
+            BestMove = MinMoveString;
+        } else {
+            BestMove = MaxMoveString;
+        }
+        int row = Integer.parseInt(BestMove.split(",")[0]);
+        int col = Integer.parseInt(BestMove.split(",")[1]);
 
         connect4Board.board[row][col] = connect4Board.turn;
 
@@ -126,70 +134,72 @@ public class AlphaBetaConnectFour implements Agent {
 
     public static double evaluationFucntion(int[][] board) {
 
-//        int scoreForTwo = 1;
-//        int scoreForThree = 10;
-//        int playerOneScore = 0;
-//        int playerTwoScore = 0;
-//
-//        for (int row = 0; row < 8; row++) {
-//            for (int col = 0; col < 8; col++) {
-//                int playerScore = 0;
-//                int player = board[row][col];
-//                if (player == 0) {
-//                    continue;
-//                }
-//
-//                if (col + 3 < 8 && player == board[row][col + 1]) {
-//
-//                    if (player == board[row][col + 2] && 0 == board[row][col + 3]) {
-//                        playerScore += scoreForThree;
-//                    } else if (0 == board[row][col + 2]){
-//                        playerScore += scoreForTwo;
-//                    }
-//                }
-//
-//                if (row + 3 < 8) {
-//                    if (player == board[row + 1][col]) {
-//
-//                        if (player == board[row + 2][col] && 0 == board[row+3][col]) {
-//                            playerScore += scoreForThree;
-//                        } 
-//                        else if(0 == board[row+2][col]) {
-//                            playerScore += scoreForTwo;
-//                        }
-//
-//                    }
-//
-//                    if (col + 3 < 8 && player == board[row + 1][col + 1]) {
-//                        
-//                        if (player == board[row + 2][col + 2] && 0 == board[row + 3][col + 3] ) {
-//                            playerScore += scoreForThree;
-//                        } else if (0 == board[row + 2][col + 2]){
-//                            playerScore += scoreForTwo;
-//                        }
-//                    }
-//
-//                    if (col - 3 >= 0 && player == board[row + 1][col - 1]) {
-//                        if (player == board[row + 2][col - 2] && 0 == board[row + 3][col - 3]) {
-//                            playerScore += scoreForThree;
-//                        } else if(0 == board[row + 2][col - 2]){
-//                            playerScore += scoreForTwo;
-//                        }
-//                    }
-//
-//                }
-//                if (player == 1) {
-//                    playerOneScore += playerScore;
-//                } else if (player == 2) {
-//                    playerTwoScore += playerScore;
-//                }
-//
-//            }
-//        }
-//
-//        return playerOneScore - playerTwoScore;
-return 0;
+        int scoreForTwo = 10;
+        int scoreForThree = 1000;
+        int playerOneScore = 0;
+        int playerTwoScore = 0;
 
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                int playerScore = 0;
+                int player = board[row][col];
+                if (player == 0) {
+                    continue;
+                }
+
+                if (col + 3 < 8 && player == board[row][col + 1]) {
+
+                    if (player == board[row][col + 2] && 0 == board[row][col + 3]) {
+                        playerScore += scoreForThree;
+                    } else if (0 == board[row][col + 2]){
+                        playerScore += scoreForTwo;
+                    }
+                }
+
+                if (row + 3 < 8) {
+                    if (player == board[row + 1][col]) {
+
+                        if (player == board[row + 2][col] && 0 == board[row+3][col]) {
+                            playerScore += scoreForThree;
+                        } 
+                        else if(0 == board[row+2][col]) {
+                            playerScore += scoreForTwo;
+                        }
+
+                    }
+
+                    if (col + 3 < 8 && player == board[row + 1][col + 1]) {
+                        
+                        if (player == board[row + 2][col + 2] && 0 == board[row + 3][col + 3] ) {
+                            playerScore += scoreForThree;
+                        } else if (0 == board[row + 2][col + 2]){
+                            playerScore += scoreForTwo;
+                        }
+                    }
+
+                    if (col - 3 >= 0 && player == board[row + 1][col - 1]) {
+                        if (player == board[row + 2][col - 2] && 0 == board[row + 3][col - 3]) {
+                            playerScore += scoreForThree;
+                        } else if(0 == board[row + 2][col - 2]){
+                            playerScore += scoreForTwo;
+                        }
+                    }
+
+                }
+                if (player == 1) {
+                    playerOneScore += playerScore;
+                } else if (player == 2) {
+                    playerTwoScore += playerScore;
+                }
+
+            }
+        }
+
+        return playerOneScore - playerTwoScore;
+ //       return 0;
+
+    
+        
     }
 
     static public double max(double one, double two) {

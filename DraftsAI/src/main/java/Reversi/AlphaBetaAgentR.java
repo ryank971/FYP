@@ -20,12 +20,13 @@ public class AlphaBetaAgentR implements Agent {
     static String MaxMoveString;
     static String MinMoveString;
     public static Boolean PlayingFor;
+    public static String BestMove;
+    public static int Depth;
 
     @Override
     public void makeMove(Board ReversiBoard) {
-        String BestMove;
-        alphaBeta(ReversiBoard, 8, PlayingFor, 8, ReversiBoard.turn, -9999999, 9999999);
-        
+        alphaBeta(ReversiBoard, Depth, PlayingFor, Depth, ReversiBoard.turn, -9999999, 9999999);
+
         if (PlayingFor == false) {
             BestMove = MinMoveString;
         } else {

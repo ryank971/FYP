@@ -15,17 +15,25 @@ import MainFolder.Agent;
  * @author Ryan Kelly
  */
 public class MinimaxConnect4 implements Agent {
-
+    public static int Depth;
     Connect4 Connect4Rules = new Connect4();
     static String MaxMoveString;
     static String MinMoveString;
+    public static Boolean PlayingFor;
+    public static String BestMove;
 
     @Override
     public void makeMove(Board connect4Board) {
 
-        minimax(connect4Board, 5, true, 5, connect4Board.turn);
-        int row = Integer.parseInt(MaxMoveString.split(",")[0]);
-        int col = Integer.parseInt(MaxMoveString.split(",")[1]);
+        minimax(connect4Board, Depth, PlayingFor, Depth, connect4Board.turn);
+
+        if (PlayingFor == false) {
+            BestMove = MinMoveString;
+        } else {
+            BestMove = MaxMoveString;
+        }
+        int row = Integer.parseInt(BestMove.split(",")[0]);
+        int col = Integer.parseInt(BestMove.split(",")[1]);
 
         connect4Board.board[row][col] = connect4Board.turn;
 

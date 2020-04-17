@@ -21,19 +21,20 @@ public class AlphaBetaAgent implements Agent {
     static String MaxMoveString;
     static String MinMoveString;
     public static Boolean PlayingFor;
+    public static String BestMove;
+    public static int Depth;
 
     @Override
     public void makeMove(Board CheckerBoard) {
 
-        String BestMove;
+        alphaBeta(CheckerBoard, Depth, PlayingFor, Depth, CheckerBoard.turn, -9999999, 9999999);
 
-        alphaBeta(CheckerBoard, 8, PlayingFor, 8, CheckerBoard.turn, -9999999, 9999999);
-        
         if (PlayingFor == false) {
             BestMove = MinMoveString;
-        }else
+        } else {
             BestMove = MaxMoveString;
-        
+        }
+
         String current = BestMove.split("-")[0];
         String move = BestMove.split("-")[1];
         String[] CurrentS = current.split(",");

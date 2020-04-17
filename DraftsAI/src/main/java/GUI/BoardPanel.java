@@ -45,49 +45,30 @@ public class BoardPanel extends JPanel {
             for (int j = 0; j < columns; j++) {
 
                 if (Board.GetBoard()[i][j] == 1) {
-                    try {
-                        BufferedImage image = ImageIO.read(new File(pieceIconPath + "black" + ".png"));
-                        TilePanel tile = new TilePanel(i, j);
-                        tile.setIcon(new ImageIcon(image));
-                        tile.setOpaque(true);
-                        tile.setBackground(temp);
-                        add(tile);
-                    } catch (IOException ex) {
-                        Logger.getLogger(BoardPanel.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    TilePanel tile = new TilePanel(i, j);
+                    tile.setIcon(new ImageIcon(loadImage("black" + ".png")));
+                    tile.setOpaque(true);
+                    tile.setBackground(temp);
+                    add(tile);
+
                 } else if (Board.GetBoard()[i][j] == 3) {
-                    try {
-                        BufferedImage image = ImageIO.read(new File(pieceIconPath + "blackKing" + ".png"));
-                        TilePanel tile = new TilePanel(i, j);
-                        tile.setIcon(new ImageIcon(image));
-                        tile.setOpaque(true);
-                        tile.setBackground(temp);
-                        add(tile);
-                    } catch (IOException ex) {
-                        Logger.getLogger(BoardPanel.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    TilePanel tile = new TilePanel(i, j);
+                    tile.setIcon(new ImageIcon(loadImage("blackKing" + ".png")));
+                    tile.setOpaque(true);
+                    tile.setBackground(temp);
+                    add(tile);
                 } else if (Board.GetBoard()[i][j] == 2) {
-                    try {
-                        BufferedImage image = ImageIO.read(new File(pieceIconPath + "red" + ".png"));
-                        TilePanel tile = new TilePanel(i, j);
-                        tile.setIcon(new ImageIcon(image));
-                        tile.setOpaque(true);
-                        tile.setBackground(temp);
-                        add(tile);
-                    } catch (IOException ex) {
-                        Logger.getLogger(BoardPanel.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    TilePanel tile = new TilePanel(i, j);
+                    tile.setIcon(new ImageIcon(loadImage("red" + ".png")));
+                    tile.setOpaque(true);
+                    tile.setBackground(temp);
+                    add(tile);
                 } else if (Board.GetBoard()[i][j] == 4) {
-                    try {
-                        BufferedImage image = ImageIO.read(new File(pieceIconPath + "redKing" + ".png"));
-                        TilePanel tile = new TilePanel(i, j);
-                        tile.setIcon(new ImageIcon(image));
-                        tile.setOpaque(true);
-                        tile.setBackground(temp);
-                        add(tile);
-                    } catch (IOException ex) {
-                        Logger.getLogger(BoardPanel.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    TilePanel tile = new TilePanel(i, j);
+                    tile.setIcon(new ImageIcon(loadImage("redKing" + ".png")));
+                    tile.setOpaque(true);
+                    tile.setBackground(temp);
+                    add(tile);
                 } else {
 
                     if (!AvailableMoves.isEmpty()) {
@@ -152,50 +133,31 @@ public class BoardPanel extends JPanel {
             outerloop:
             for (int j = 0; j < columns; j++) {
 
-                if (Board.GetBoard()[i][j] == 1) {
-                    try {
-                        BufferedImage image = ImageIO.read(new File(pieceIconPath + "black" + ".png"));
-                        TilePanel tile = new TilePanel(i, j);
-                        tile.setIcon(new ImageIcon(image));
-                        tile.setOpaque(true);
-                        tile.setBackground(temp);
-                        add(tile);
-                    } catch (IOException ex) {
-                        Logger.getLogger(BoardPanel.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                 if (Board.GetBoard()[i][j] == 1) {
+                    TilePanel tile = new TilePanel(i, j);
+                    tile.setIcon(new ImageIcon(loadImage("black" + ".png")));
+                    tile.setOpaque(true);
+                    tile.setBackground(temp);
+                    add(tile);
+
                 } else if (Board.GetBoard()[i][j] == 3) {
-                    try {
-                        BufferedImage image = ImageIO.read(new File(pieceIconPath + "blackKing" + ".png"));
-                        TilePanel tile = new TilePanel(i, j);
-                        tile.setIcon(new ImageIcon(image));
-                        tile.setOpaque(true);
-                        tile.setBackground(temp);
-                        add(tile);
-                    } catch (IOException ex) {
-                        Logger.getLogger(BoardPanel.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    TilePanel tile = new TilePanel(i, j);
+                    tile.setIcon(new ImageIcon(loadImage("blackKing" + ".png")));
+                    tile.setOpaque(true);
+                    tile.setBackground(temp);
+                    add(tile);
                 } else if (Board.GetBoard()[i][j] == 2) {
-                    try {
-                        BufferedImage image = ImageIO.read(new File(pieceIconPath + "red" + ".png"));
-                        TilePanel tile = new TilePanel(i, j);
-                        tile.setIcon(new ImageIcon(image));
-                        tile.setOpaque(true);
-                        tile.setBackground(temp);
-                        add(tile);
-                    } catch (IOException ex) {
-                        Logger.getLogger(BoardPanel.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    TilePanel tile = new TilePanel(i, j);
+                    tile.setIcon(new ImageIcon(loadImage("red" + ".png")));
+                    tile.setOpaque(true);
+                    tile.setBackground(temp);
+                    add(tile);
                 } else if (Board.GetBoard()[i][j] == 4) {
-                    try {
-                        BufferedImage image = ImageIO.read(new File(pieceIconPath + "redKing" + ".png"));
-                        TilePanel tile = new TilePanel(i, j);
-                        tile.setIcon(new ImageIcon(image));
-                        tile.setOpaque(true);
-                        tile.setBackground(temp);
-                        add(tile);
-                    } catch (IOException ex) {
-                        Logger.getLogger(BoardPanel.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    TilePanel tile = new TilePanel(i, j);
+                    tile.setIcon(new ImageIcon(loadImage("redKing" + ".png")));
+                    tile.setOpaque(true);
+                    tile.setBackground(temp);
+                    add(tile);
                 } else {
 
                     if (!AvailableMoves.isEmpty()) {
@@ -260,49 +222,30 @@ public class BoardPanel extends JPanel {
             for (int j = 0; j < columns; j++) {
 
                 if (Board.GetBoard()[i][j] == 1) {
-                    try {
-                        BufferedImage image = ImageIO.read(new File(pieceIconPath + "black" + ".png"));
-                        TilePanel tile = new TilePanel(i, j);
-                        tile.setIcon(new ImageIcon(image));
-                        tile.setOpaque(true);
-                        tile.setBackground(temp);
-                        add(tile);
-                    } catch (IOException ex) {
-                        Logger.getLogger(BoardPanel.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    TilePanel tile = new TilePanel(i, j);
+                    tile.setIcon(new ImageIcon(loadImage("black" + ".png")));
+                    tile.setOpaque(true);
+                    tile.setBackground(temp);
+                    add(tile);
+
                 } else if (Board.GetBoard()[i][j] == 3) {
-                    try {
-                        BufferedImage image = ImageIO.read(new File(pieceIconPath + "blackKing" + ".png"));
-                        TilePanel tile = new TilePanel(i, j);
-                        tile.setIcon(new ImageIcon(image));
-                        tile.setOpaque(true);
-                        tile.setBackground(temp);
-                        add(tile);
-                    } catch (IOException ex) {
-                        Logger.getLogger(BoardPanel.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    TilePanel tile = new TilePanel(i, j);
+                    tile.setIcon(new ImageIcon(loadImage("blackKing" + ".png")));
+                    tile.setOpaque(true);
+                    tile.setBackground(temp);
+                    add(tile);
                 } else if (Board.GetBoard()[i][j] == 2) {
-                    try {
-                        BufferedImage image = ImageIO.read(new File(pieceIconPath + "red" + ".png"));
-                        TilePanel tile = new TilePanel(i, j);
-                        tile.setIcon(new ImageIcon(image));
-                        tile.setOpaque(true);
-                        tile.setBackground(temp);
-                        add(tile);
-                    } catch (IOException ex) {
-                        Logger.getLogger(BoardPanel.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    TilePanel tile = new TilePanel(i, j);
+                    tile.setIcon(new ImageIcon(loadImage("red" + ".png")));
+                    tile.setOpaque(true);
+                    tile.setBackground(temp);
+                    add(tile);
                 } else if (Board.GetBoard()[i][j] == 4) {
-                    try {
-                        BufferedImage image = ImageIO.read(new File(pieceIconPath + "redKing" + ".png"));
-                        TilePanel tile = new TilePanel(i, j);
-                        tile.setIcon(new ImageIcon(image));
-                        tile.setOpaque(true);
-                        tile.setBackground(temp);
-                        add(tile);
-                    } catch (IOException ex) {
-                        Logger.getLogger(BoardPanel.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    TilePanel tile = new TilePanel(i, j);
+                    tile.setIcon(new ImageIcon(loadImage("redKing" + ".png")));
+                    tile.setOpaque(true);
+                    tile.setBackground(temp);
+                    add(tile);
                 } else {
 
                     if (!AvailableMoves.isEmpty()) {
@@ -360,6 +303,17 @@ public class BoardPanel extends JPanel {
 
             }
         }
+    }
+
+    public BufferedImage loadImage(String imageName) {
+        BufferedImage image = null;
+
+        try {
+            image = ImageIO.read(getClass().getClassLoader().getResourceAsStream(imageName));
+        } catch (IOException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return image;
     }
 
 }

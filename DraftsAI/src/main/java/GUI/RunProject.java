@@ -5,18 +5,17 @@
  */
 package GUI;
 
-
-import java.util.Observable;
-import java.util.Observer;
-
 /**
  *
  * @author Ryan Kelly
  */
-public class GuiMain extends Observable  {
-    public GuiMain() {
+public class RunProject {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
         GameFrame game = new GameFrame();
     }
-
-
+    
 }

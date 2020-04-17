@@ -20,13 +20,21 @@ public class MinimaxAgentR implements Agent {
     Reversi reversiRules = new Reversi();
     static String MaxMoveString;
     static String MinMoveString;
+    public static Boolean PlayingFor;
+    public static  String BestMove ;
+        public static int Depth;
 
     @Override
     public void makeMove(Board ReversiBoard) {
-        
-        minimax(ReversiBoard, 5, true, 5, ReversiBoard.turn);
-        int row = Integer.parseInt(MaxMoveString.split(",")[0]);
-        int col = Integer.parseInt(MaxMoveString.split(",")[1]);
+
+        minimax(ReversiBoard, Depth, PlayingFor, Depth, ReversiBoard.turn);
+        if (PlayingFor == false) {
+            BestMove = MinMoveString;
+        } else {
+            BestMove = MaxMoveString;
+        }
+        int row = Integer.parseInt(BestMove.split(",")[0]);
+        int col = Integer.parseInt(BestMove.split(",")[1]);
 
         ReversiBoard.board[row][col] = ReversiBoard.turn;
 

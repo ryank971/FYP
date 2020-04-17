@@ -16,7 +16,7 @@ import MainFolder.Agent;
  * @author Ryan Kelly
  */
 public class RandomAgentR implements Agent {
-
+    public static String BestMove;
     Reversi reversiRules = new Reversi();
 
     @Override
@@ -28,6 +28,7 @@ public class RandomAgentR implements Agent {
             Random rand = new Random();
             int a = rand.nextInt(validMoves.size());
             String Move = validMoves.get(a);
+            BestMove = Move;
             int row = Integer.parseInt(Move.split(",")[0]);
             int col = Integer.parseInt(Move.split(",")[1]);
             

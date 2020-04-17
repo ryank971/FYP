@@ -58,8 +58,8 @@ public class Menu extends javax.swing.JFrame {
     static RandomAgent randomAgent = new RandomAgent();
     static MinimaxAgent minimaxAgent = new MinimaxAgent();
     static AlphaBetaAgent alphaBetaAgent = new AlphaBetaAgent();
-    static Board CheckersBoard = new Board();
-    static Board ReversiBoard = new Board();
+    static Board board = new Board();
+
     static Reversi reversi = new Reversi();
     static Checkers checkers = new Checkers();
     static RandomAgentR reversiRandom = new RandomAgentR();
@@ -71,8 +71,7 @@ public class Menu extends javax.swing.JFrame {
     static String pieceIconPath = "Resources/";
 
     public Menu() {
-        CheckersBoard.setCheckerBoard();
-        ReversiBoard.setReversiBoard();
+
         initComponents();
         try {
             myComponents();
@@ -84,8 +83,14 @@ public class Menu extends javax.swing.JFrame {
     }
 
     public void myComponents() throws IOException {
-        JPanel CheckersDemo = CheckersDemo();
-        JPanel ReversiDemo = ReversiDemo();
+        board.setCheckerBoard();
+
+        JPanel CheckersDemo = Demo(60, 390, this);
+        board.setReversiBoard();
+        JPanel ReversiDemo = Demo(720, 390, this);
+        board.setConnect4Board();
+        JPanel Connect4 = Demo(390, 390, this);
+        add(Connect4);
         add(CheckersDemo);
         add(ReversiDemo);
 
@@ -195,11 +200,9 @@ public class Menu extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_playConnect4ActionPerformed
 
-  
-
-    public static JPanel CheckersDemo() throws IOException {
+    public static JPanel Demo(int plotH, int plotW, Menu menu) throws IOException {
         JPanel pane = new JPanel();
-        pane.setBounds(60, 390, 200, 200);
+        pane.setBounds(plotH, plotW, 200, 200);
         pane.setLayout(new GridLayout(rows, columns));
         Color temp;
         for (int i = 0; i < rows; i++) {
@@ -211,20 +214,31 @@ public class Menu extends javax.swing.JFrame {
             outerloop:
             for (int j = 0; j < columns; j++) {
 
-                if (CheckersBoard.GetBoard()[i][j] == 1 || CheckersBoard.GetBoard()[i][j] == 3) {
-                    BufferedImage image = ImageIO.read(new File(pieceIconPath + "black" + ".png"));
+                if (board.GetBoard()[i][j] == 1) {
                     TilePanel tile = new TilePanel(i, j);
-                    tile.setIcon(new ImageIcon(image));
+                    tile.setIcon(new ImageIcon(menu.loadImage("blackThumb" + ".png")));
                     tile.setOpaque(true);
                     tile.setBackground(temp);
                     pane.add(tile);
-                } else if (CheckersBoard.GetBoard()[i][j] == 2 || CheckersBoard.GetBoard()[i][j] == 4) {
-                    BufferedImage image = ImageIO.read(new File(pieceIconPath + "red" + ".png"));
-                    TilePanel tile = new TilePanel(i, j);
-                    tile.setIcon(new ImageIcon(image));
-                    tile.setOpaque(true);
-                    tile.setBackground(temp);
-                    pane.add(tile);
+
+                } else if (board.GetBoard()[i][j] == 3) {
+                        TilePanel tile = new TilePanel(i, j);
+                        tile.setIcon(new ImageIcon(menu.loadImage("blackKingThumb" + ".png")));
+                        tile.setOpaque(true);
+                        tile.setBackground(temp);
+                        pane.add(tile);
+                } else if (board.GetBoard()[i][j] == 2) {
+                        TilePanel tile = new TilePanel(i, j);
+                        tile.setIcon(new ImageIcon(menu.loadImage("redThumb" + ".png")));
+                        tile.setOpaque(true);
+                        tile.setBackground(temp);
+                        pane.add(tile);
+                } else if (board.GetBoard()[i][j] == 4) {
+                        TilePanel tile = new TilePanel(i, j);
+                        tile.setIcon(new ImageIcon(menu.loadImage("redKingThumb" + ".png")));
+                        tile.setOpaque(true);
+                        tile.setBackground(temp);
+                        pane.add(tile);
                 } else {
 
                     if (!AvailableMoves.isEmpty()) {
@@ -272,79 +286,15 @@ public class Menu extends javax.swing.JFrame {
         return pane;
     }
 
-    public static JPanel ReversiDemo() throws IOException {
-        JPanel pane = new JPanel();
-        pane.setBounds(720, 390, 200, 200);
-        pane.setLayout(new GridLayout(rows, columns));
-        Color temp;
-        for (int i = 0; i < rows; i++) {
-            if (i % 2 == 0) {
-                temp = col1;
-            } else {
-                temp = col2;
-            }
-            outerloop:
-            for (int j = 0; j < columns; j++) {
+    public BufferedImage loadImage(String imageName) {
+        BufferedImage image = null;
 
-                if (ReversiBoard.GetBoard()[i][j] == 1 || ReversiBoard.GetBoard()[i][j] == 3) {
-                    BufferedImage image = ImageIO.read(new File(pieceIconPath + "black" + ".png"));
-                    TilePanel tile = new TilePanel(i, j);
-                    tile.setIcon(new ImageIcon(image));
-                    tile.setOpaque(true);
-                    tile.setBackground(temp);
-                    pane.add(tile);
-                } else if (ReversiBoard.GetBoard()[i][j] == 2 || ReversiBoard.GetBoard()[i][j] == 4) {
-                    BufferedImage image = ImageIO.read(new File(pieceIconPath + "red" + ".png"));
-                    TilePanel tile = new TilePanel(i, j);
-                    tile.setIcon(new ImageIcon(image));
-                    tile.setOpaque(true);
-                    tile.setBackground(temp);
-                    pane.add(tile);
-                } else {
-
-                    if (!AvailableMoves.isEmpty()) {
-                        boolean isAvailableMove = false;
-                        for (int l = 0; l < AvailableMoves.size(); l++) {
-                            String[] tempM = AvailableMoves.get(l).split("-");
-                            String[] CurrentS = tempM[1].split(",");
-                            int size = CurrentS.length;
-                            int[] Current = new int[size];
-                            for (int a = 0; a < size; a++) {
-                                Current[a] = Integer.parseInt(CurrentS[a]);
-                            }
-
-                            if (i == Current[0] && j == Current[1]) {
-                                isAvailableMove = true;
-
-                            }
-                        }
-                        if (isAvailableMove == true) {
-                            JPanel panel = new JPanel();
-                            panel.setBackground(Color.GREEN);
-                            pane.add(panel);
-                        } else {
-                            JPanel panel = new JPanel();
-                            panel.setBackground(temp);
-                            pane.add(panel);
-                        }
-
-                    } else {
-                        JPanel panel = new JPanel();
-                        panel.setBackground(temp);
-                        pane.add(panel);
-                    }
-
-                }
-
-                if (temp == col1) {
-                    temp = col2;
-                } else {
-                    temp = col1;
-                }
-
-            }
+        try {
+            image = ImageIO.read(getClass().getClassLoader().getResourceAsStream(imageName));
+        } catch (IOException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return pane;
+        return image;
     }
 
     private javax.swing.JPanel CheckersDemo;

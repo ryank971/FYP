@@ -16,6 +16,7 @@ import MainFolder.Agent;
  */
 public class RandomAgent implements Agent {
 
+    public static String BestMove;
     Checkers checkerRules = new Checkers();
 
     @Override
@@ -25,6 +26,7 @@ public class RandomAgent implements Agent {
         Random rand = new Random();
         int a = rand.nextInt(validMoves.size());
         String CurrentAndMove = validMoves.get(a);
+        BestMove = CurrentAndMove;
         String current = CurrentAndMove.split("-")[0];
         String move = CurrentAndMove.split("-")[1];
 

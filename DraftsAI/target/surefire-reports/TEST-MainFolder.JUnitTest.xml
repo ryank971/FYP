@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="1" failures="0" name="MainFolder.JUnitTest" time="0.025" errors="0" skipped="0">
+<testsuite tests="7" failures="0" name="MainFolder.JUnitTest" time="0.085" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="java.vm.version" value="9.0.4+11"/>
@@ -15,7 +15,6 @@
     <property name="user.script" value=""/>
     <property name="user.country" value="GB"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
-    <property name="test" value="MainFolder.JUnitTest#testDoubleJumpV1"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
     <property name="user.dir" value="C:\Users\Ryan Kelly\Documents\Assignment2\K00219181\DraftsAI"/>
     <property name="java.vm.compressedOopsMode" value="Zero based"/>
@@ -46,7 +45,7 @@
     <property name="java.class.path" value="C:\Program Files\NetBeans-11.1\netbeans\java\maven\boot\plexus-classworlds-2.5.2.jar"/>
     <property name="java.vm.specification.version" value="9"/>
     <property name="sun.arch.data.model" value="64"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -Dtest=MainFolder.JUnitTest#testDoubleJumpV1 -Dmaven.ext.class.path=C:\Program Files\NetBeans-11.1\netbeans\java\maven-nblib\netbeans-eventspy.jar -Dfile.encoding=UTF-8 test-compile surefire:test"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -Dmaven.ext.class.path=C:\Program Files\NetBeans-11.1\netbeans\java\maven-nblib\netbeans-eventspy.jar -Dfile.encoding=UTF-8 clean install"/>
     <property name="java.home" value="C:\Program Files\Java\jdk-9.0.4"/>
     <property name="user.language" value="en"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
@@ -62,5 +61,11 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="MainFolder.JUnitTest" name="testDoubleJumpV1" time="0.025"/>
+  <testcase classname="MainFolder.JUnitTest" name="testEndGameScenario1" time="0.032"/>
+  <testcase classname="MainFolder.JUnitTest" name="testEndGameScenario2" time="0.031"/>
+  <testcase classname="MainFolder.JUnitTest" name="testDoubleJumpV1" time="0.022"/>
+  <testcase classname="MainFolder.JUnitTest" name="testDoubleJumpV2" time="0"/>
+  <testcase classname="MainFolder.JUnitTest" name="testDoubleJumpV3" time="0"/>
+  <testcase classname="MainFolder.JUnitTest" name="testDoubleJumpV4" time="0"/>
+  <testcase classname="MainFolder.JUnitTest" name="testDoubleJumpV5" time="0"/>
 </testsuite>

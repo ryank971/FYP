@@ -40,7 +40,6 @@ public class Connect4 implements Game {
     public Boolean isOver(Board connect4Board) {
 
         if (CheckWin(connect4Board) != 0) {
-            System.out.println("GameOver");
             return true;
         }
 

@@ -6,17 +6,19 @@
 package GUI;
 
 import Checkers.HumanPlayer;
+import Connect4.HumanPlayerConnectFour;
 import static GUI.GameFrame.AvailableMoves;
 import static GUI.GameFrame.Board;
 import static GUI.GameFrame.CheckWin;
 import static GUI.GameFrame.PlayerOne;
 import static GUI.GameFrame.PlayerTwo;
+import static GUI.GameFrame.addMovetoLogMoves;
 import static GUI.GameFrame.boardPanel;
 import static GUI.GameFrame.connect4;
-import static GUI.GameFrame.makeMove;
 import static GUI.GameFrame.menu;
 import static GUI.GameFrame.reversi;
 import static GUI.Menu.minimaxAgent;
+import Reversi.HumanPlayerReversi;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -34,7 +36,9 @@ import javax.swing.SwingUtilities;
  */
 public class TilePanel extends JLabel implements MouseListener {
 
-    HumanPlayer player = new HumanPlayer();
+    HumanPlayer playerCheckers = new HumanPlayer();
+    HumanPlayerReversi playerReversi = new HumanPlayerReversi();
+    HumanPlayerConnectFour playerConnectFour = new HumanPlayerConnectFour();
     static int[] Move;
     static int[] Current;
     int Row;
@@ -55,7 +59,8 @@ public class TilePanel extends JLabel implements MouseListener {
 
                 if (Current != null && !(AvailableMoves.isEmpty())) {
                     Move = new int[]{Row, Column};
-                    player.makeMove(Board, Current[0] + "," + Current[1], Move[0] + "," + Move[1]);
+                    playerCheckers.makeMove(Board, Current[0] + "," + Current[1], Move[0] + "," + Move[1]);
+                    addMovetoLogMoves(playerCheckers.BestMove);
 
                 }
 
@@ -72,7 +77,8 @@ public class TilePanel extends JLabel implements MouseListener {
             } else if (Board.turn == 1 && PlayerOne.equals("Human")) {
                 if (Current != null && !(AvailableMoves.isEmpty())) {
                     Move = new int[]{Row, Column};
-                    player.makeMove(Board, Current[0] + "," + Current[1], Move[0] + "," + Move[1]);
+                    playerCheckers.makeMove(Board, Current[0] + "," + Current[1], Move[0] + "," + Move[1]);
+                    addMovetoLogMoves(playerCheckers.BestMove);
 
                 }
 
@@ -94,7 +100,8 @@ public class TilePanel extends JLabel implements MouseListener {
 
                 if (move.equals(Move[0] + "," + Move[1])) {
                     System.out.println(Board.turn + " made move = " + Move);
-                    makeMove(Board, Move[0] + "," + Move[1]);
+                    playerReversi.makeMove(Board, Move[0] + "," + Move[1]);
+                    addMovetoLogMoves(playerReversi.BestMove);
                 }
             }
             SwingUtilities.invokeLater(new Runnable() {
@@ -112,7 +119,8 @@ public class TilePanel extends JLabel implements MouseListener {
 
                 if (move.equals(Move[0] + "," + Move[1])) {
                     System.out.println(Board.turn + " made move = " + Move);
-                    makeMove(Board, Move[0] + "," + Move[1]);
+                    playerConnectFour.makeMove(Board, Move[0] + "," + Move[1]);
+                    addMovetoLogMoves(playerConnectFour.BestMove);
                 }
             }
             SwingUtilities.invokeLater(new Runnable() {
