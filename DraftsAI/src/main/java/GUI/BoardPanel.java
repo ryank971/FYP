@@ -32,7 +32,7 @@ public class BoardPanel extends JPanel {
     static Checkers checkers = new Checkers();
 
     public BoardPanel(Board Board) {
-        setBounds(20, 20, 800, 800);
+        setBounds(20, 60, 800, 800);
         setLayout(new GridLayout(rows, columns));
         Color temp;
         for (int i = 0; i < rows; i++) {
@@ -121,7 +121,7 @@ public class BoardPanel extends JPanel {
     public void updateBoardPanel(Board Board, String move) {
         AvailableMoves = AvailableMoves = checkers.validMovesFromPiece(Board, move);
         removeAll();
-        setBounds(20, 20, 800, 800);
+        setBounds(20, 60, 800, 800);
         setLayout(new GridLayout(rows, columns));
         Color temp;
         for (int i = 0; i < rows; i++) {
@@ -209,7 +209,7 @@ public class BoardPanel extends JPanel {
 
     public void updateBoardPanel(Board Board) {
         removeAll();
-        setBounds(20, 20, 800, 800);
+        setBounds(20, 60, 800, 800);
         setLayout(new GridLayout(rows, columns));
         Color temp;
         for (int i = 0; i < rows; i++) {

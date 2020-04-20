@@ -10,6 +10,7 @@ import MainFolder.Board;
 import Checkers.*;
 import Reversi.*;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.*;
@@ -50,7 +51,9 @@ public class GameFrame extends javax.swing.JFrame implements WindowListener {
     static AlphaBetaAgentR alphaBetaReversi = new AlphaBetaAgentR();
     static RandomAgentR randomAgentReversi = new RandomAgentR();
 
-    static javax.swing.Timer timer;
+    static javax.swing.Timer ReversiTimer;
+    static javax.swing.Timer ConnectFourTimer;
+    static javax.swing.Timer CheckerTimer;
     static JTextPane logMoves = new JTextPane();
     static BoardPanel boardPanel = new BoardPanel(Board);
     static GameFrame c;
@@ -81,7 +84,7 @@ public class GameFrame extends javax.swing.JFrame implements WindowListener {
 
     public void addLogMoves() {
 
-        logMoves.setBounds(850, 20, 300, 800);
+        logMoves.setBounds(850, 60, 300, 800);
         JScrollPane sp = new JScrollPane(logMoves);
         getContentPane().add(sp);
         this.add(logMoves);
@@ -140,14 +143,37 @@ public class GameFrame extends javax.swing.JFrame implements WindowListener {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                if (menu.PlayCheckers == true) {
+                    CheckerTimer.stop();
+                } else if (menu.PlayReversi == true) {
+                    ReversiTimer.stop();
+                } else if (menu.PlayConnect4 == true) {
+                    ConnectFourTimer.stop();
+                }
+
+                popUp = true;
+                showPopUp();
+
+                while (popUp
+                        == true) {
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(GameFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
                 logMoves.setText("");
                 if (menu.PlayCheckers == true) {
                     Board.setCheckerBoard();
+                    CheckerTimer.start();
 
                 } else if (menu.PlayReversi == true) {
                     Board.setReversiBoard();
+                    ReversiTimer.start();
                 } else {
                     Board.setConnect4Board();
+                    ConnectFourTimer.start();
                 }
                 boardPanel.updateBoardPanel(Board);
                 boardPanel.revalidate();
@@ -155,29 +181,25 @@ public class GameFrame extends javax.swing.JFrame implements WindowListener {
         });
 
         final JMenu changeGame = new JMenu("Change Game");
-
         JMenuItem selectCheckers = new JMenuItem("Play Checkers");
+        JMenuItem selectReversi = new JMenuItem("Play Reversi");
+        JMenuItem selectConnectFour = new JMenuItem("Play Connect4");
+
         selectCheckers.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (ReversiTimer.isRunning()) {
+                    ReversiTimer.stop();
+                } else if (ConnectFourTimer.isRunning()) {
+                    ConnectFourTimer.stop();
+                }
 
                 menu.PlayCheckers = true;
                 menu.PlayReversi = false;
                 menu.PlayConnect4 = false;
                 Board.setCheckerBoard();
                 popUp = true;
-                PlayerOneAlgorithm = null;
-                PlayerOneDepth = 0;
-                PlayerTwoAlgorithm = null;
-                PlayerTwoDepth = 0;
-
-                BLACK = 0;
-                RED = 0;
-                PlayerOne = null;
-                PlayerTwo = null;
-
                 showPopUp();
-
                 while (popUp
                         == true) {
                     try {
@@ -189,31 +211,29 @@ public class GameFrame extends javax.swing.JFrame implements WindowListener {
                 boardPanel.updateBoardPanel(Board);
                 boardPanel.revalidate();
                 startCheckers();
+
+                selectCheckers.setEnabled(false);
+                selectReversi.setEnabled(true);
+                selectConnectFour.setEnabled(true);
+                c.repaint();
             }
 
         }
         );
 
-        JMenuItem selectReversi = new JMenuItem("Play Reversi");
         selectReversi.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                if (CheckerTimer.isRunning()) {
+                    CheckerTimer.stop();
+                } else if (ConnectFourTimer.isRunning()) {
+                    ConnectFourTimer.stop();
+                }
                 menu.PlayCheckers = false;
                 menu.PlayReversi = true;
                 menu.PlayConnect4 = false;
                 Board.setReversiBoard();
                 popUp = true;
-                PlayerOneAlgorithm = null;
-                PlayerOneDepth = 0;
-                PlayerTwoAlgorithm = null;
-                PlayerTwoDepth = 0;
-
-                BLACK = 0;
-                RED = 0;
-                PlayerOne = null;
-                PlayerTwo = null;
-
                 showPopUp();
 
                 while (popUp
@@ -227,30 +247,28 @@ public class GameFrame extends javax.swing.JFrame implements WindowListener {
                 boardPanel.updateBoardPanel(Board);
                 boardPanel.revalidate();
                 startReversi();
+                selectCheckers.setEnabled(true);
+                selectReversi.setEnabled(false);
+                selectConnectFour.setEnabled(true);
+                c.repaint();
             }
 
         }
         );
 
-        JMenuItem selectConnectFour = new JMenuItem("Play Connect4");
         selectConnectFour.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                if (CheckerTimer.isRunning()) {
+                    CheckerTimer.stop();
+                } else if (ReversiTimer.isRunning()) {
+                    ReversiTimer.stop();
+                }
                 menu.PlayCheckers = false;
                 menu.PlayReversi = false;
                 menu.PlayConnect4 = true;
                 Board.setConnect4Board();
                 popUp = true;
-                PlayerOneAlgorithm = null;
-                PlayerOneDepth = 0;
-                PlayerTwoAlgorithm = null;
-                PlayerTwoDepth = 0;
-
-                BLACK = 0;
-                RED = 0;
-                PlayerOne = null;
-                PlayerTwo = null;
 
                 showPopUp();
 
@@ -262,23 +280,34 @@ public class GameFrame extends javax.swing.JFrame implements WindowListener {
                         Logger.getLogger(GameFrame.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
+                AvailableMoves = new ArrayList();
                 boardPanel.updateBoardPanel(Board);
                 boardPanel.revalidate();
                 startConnect4();
+                selectCheckers.setEnabled(true);
+                selectReversi.setEnabled(true);
+                selectConnectFour.setEnabled(false);
+                c.repaint();
             }
 
         }
         );
+        changeGame.add(selectCheckers);
+        changeGame.add(selectReversi);
+        changeGame.add(selectConnectFour);
 
         if (menu.PlayCheckers == true) {
-            changeGame.add(selectReversi);
-            changeGame.add(selectConnectFour);
+            selectCheckers.setEnabled(false);
+            selectReversi.setEnabled(true);
+            selectConnectFour.setEnabled(true);
         } else if (menu.PlayReversi == true) {
-            changeGame.add(selectCheckers);
-            changeGame.add(selectConnectFour);
+            selectCheckers.setEnabled(true);
+            selectReversi.setEnabled(false);
+            selectConnectFour.setEnabled(true);
         } else {
-            changeGame.add(selectReversi);
-            changeGame.add(selectCheckers);
+            selectCheckers.setEnabled(true);
+            selectReversi.setEnabled(true);
+            selectConnectFour.setEnabled(false);
         }
 
         final JMenuItem onOffMoveLog = new JMenuItem();
@@ -322,7 +351,6 @@ public class GameFrame extends javax.swing.JFrame implements WindowListener {
         this.setJMenuBar(boardMenu);
     }
 
-//
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -333,7 +361,8 @@ public class GameFrame extends javax.swing.JFrame implements WindowListener {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(1200, 900));
+        setMinimumSize(new java.awt.Dimension(1200, 1000));
+        setPreferredSize(new java.awt.Dimension(690, 700));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -343,7 +372,7 @@ public class GameFrame extends javax.swing.JFrame implements WindowListener {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 572, Short.MAX_VALUE)
+            .addGap(0, 630, Short.MAX_VALUE)
         );
 
         pack();
@@ -398,11 +427,14 @@ public class GameFrame extends javax.swing.JFrame implements WindowListener {
         while (popUp == true) {
             Thread.sleep(200);
         }
+
+        PlayerTurnAlert(c);
+
         if (menu.PlayCheckers == true) {
             startCheckers();
         } else if (menu.PlayReversi == true) {
             startReversi();
-        } else {
+        } else if (menu.PlayConnect4 == true) {
             startConnect4();
         }
 
@@ -413,25 +445,59 @@ public class GameFrame extends javax.swing.JFrame implements WindowListener {
         boardPanel.updateBoardPanel(Board);
         boardPanel.revalidate();
 
-        if (PlayerTwo.equals("AI") || PlayerOne.equals("AI")) {
-            javax.swing.Timer t = new javax.swing.Timer(1000, new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    CheckWin();
-                    if (Board.turn == 1 && PlayerOne.equals("AI")) {
+        CheckerTimer = new javax.swing.Timer(1000, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                CheckWin();
+                if (Board.turn == 1 && PlayerOne.equals("AI")) {
 
-                        if (null == PlayerOneAlgorithm) {
+                    if (null == PlayerOneAlgorithm) {
+                        randomAgent.makeMove(Board);
+                    } else {
+                        switch (PlayerOneAlgorithm) {
+                            case "Minimax":
+                                minimaxAgent.PlayingFor = true;
+                                minimaxAgent.Depth = PlayerOneDepth;
+                                minimaxAgent.makeMove(Board);
+                                addMovetoLogMoves(minimaxAgent.BestMove);
+                                break;
+                            case "Alpha Beta":
+                                alphaBetaAgent.Depth = PlayerOneDepth;
+                                alphaBetaAgent.PlayingFor = true;
+                                alphaBetaAgent.makeMove(Board);
+                                addMovetoLogMoves(alphaBetaAgent.BestMove);
+                                break;
+                            default:
+                                randomAgent.makeMove(Board);
+                                addMovetoLogMoves(randomAgent.BestMove);
+                                break;
+                        }
+                    }
+                    boardPanel.updateBoardPanel(Board);
+                    boardPanel.revalidate();
+                }
+                if (PlayerOne.equals("AI") && PlayerTwo.equals("AI")) {
+                    if (timestart < 0) {
+                        timestart = System.currentTimeMillis();
+                    }
+                }
+                CheckWin();
+
+                if (Board.turn == 2 && PlayerTwo.equals("AI")) {
+                    long time = System.currentTimeMillis() - timestart;
+                    if (time > timerAgent) {
+                        if (null == PlayerTwoAlgorithm) {
                             randomAgent.makeMove(Board);
                         } else {
-                            switch (PlayerOneAlgorithm) {
+                            switch (PlayerTwoAlgorithm) {
                                 case "Minimax":
-                                    minimaxAgent.PlayingFor = true;
-                                    minimaxAgent.Depth = PlayerOneDepth;
+                                    minimaxAgent.Depth = PlayerTwoDepth;
+                                    minimaxAgent.PlayingFor = false;
                                     minimaxAgent.makeMove(Board);
                                     addMovetoLogMoves(minimaxAgent.BestMove);
                                     break;
                                 case "Alpha Beta":
-                                    alphaBetaAgent.Depth = PlayerOneDepth;
-                                    alphaBetaAgent.PlayingFor = true;
+                                    alphaBetaAgent.Depth = PlayerTwoDepth;
+                                    alphaBetaAgent.PlayingFor = false;
                                     alphaBetaAgent.makeMove(Board);
                                     addMovetoLogMoves(alphaBetaAgent.BestMove);
                                     break;
@@ -443,50 +509,14 @@ public class GameFrame extends javax.swing.JFrame implements WindowListener {
                         }
                         boardPanel.updateBoardPanel(Board);
                         boardPanel.revalidate();
+                        timestart = -1L;
                     }
-                    if (PlayerOne.equals("AI") && PlayerTwo.equals("AI")) {
-                        if (timestart < 0) {
-                            timestart = System.currentTimeMillis();
-                        }
-                    }
-                    CheckWin();
-
-                    if (Board.turn == 2 && PlayerTwo.equals("AI")) {
-                        long time = System.currentTimeMillis() - timestart;
-                        if (time > timerAgent) {
-                            if (null == PlayerTwoAlgorithm) {
-                                randomAgent.makeMove(Board);
-                            } else {
-                                switch (PlayerTwoAlgorithm) {
-                                    case "Minimax":
-                                        minimaxAgent.Depth = PlayerTwoDepth;
-                                        minimaxAgent.PlayingFor = false;
-                                        minimaxAgent.makeMove(Board);
-                                        addMovetoLogMoves(minimaxAgent.BestMove);
-                                        break;
-                                    case "Alpha Beta":
-                                        alphaBetaAgent.Depth = PlayerTwoDepth;
-                                        alphaBetaAgent.PlayingFor = false;
-                                        alphaBetaAgent.makeMove(Board);
-                                        addMovetoLogMoves(alphaBetaAgent.BestMove);
-                                        break;
-                                    default:
-                                        randomAgent.makeMove(Board);
-                                        addMovetoLogMoves(randomAgent.BestMove);
-                                        break;
-                                }
-                            }
-                            boardPanel.updateBoardPanel(Board);
-                            boardPanel.revalidate();
-                            timestart = -1L;
-                        }
-                    }
-
                 }
-            });
 
-            t.start();
-        }
+            }
+        });
+
+        CheckerTimer.start();
     }
 
     public static void startReversi() {
@@ -494,27 +524,69 @@ public class GameFrame extends javax.swing.JFrame implements WindowListener {
         boardPanel.updateBoardPanel(Board);
         boardPanel.revalidate();
 
-        if (PlayerTwo.equals("AI") || PlayerOne.equals("AI")) {
-            javax.swing.Timer t = new javax.swing.Timer(1000, new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    CheckWin();
-                    if (Board.turn == 1 && PlayerOne.equals("AI")) {
+        ReversiTimer = new javax.swing.Timer(1000, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                CheckWin();
+                if (Board.turn == 1 && PlayerOne.equals("AI")) {
+                    AvailableMoves = new ArrayList();
+                    if (null == PlayerOneAlgorithm) {
+                        randomAgentReversi.makeMove(Board);
+                    } else {
+                        switch (PlayerOneAlgorithm) {
+                            case "Minimax":
+                                minimaxAgentReversi.Depth = PlayerOneDepth;
+                                minimaxAgentReversi.PlayingFor = true;
+                                minimaxAgentReversi.makeMove(Board);
+                                addMovetoLogMoves(minimaxAgentReversi.BestMove);
+                                break;
+                            case "Alpha Beta":
+                                alphaBetaReversi.Depth = PlayerOneDepth;
+                                alphaBetaReversi.PlayingFor = true;
+                                alphaBetaReversi.BestMove = null;
+                                alphaBetaReversi.makeMove(Board);
 
-                        if (null == PlayerOneAlgorithm) {
+                                addMovetoLogMoves(alphaBetaReversi.BestMove);
+                                Board.PrintGame();
+                                break;
+                            default:
+                                randomAgentReversi.makeMove(Board);
+                                addMovetoLogMoves(randomAgentReversi.BestMove);
+                                break;
+                        }
+                    }
+                    boardPanel.updateBoardPanel(Board);
+                    boardPanel.revalidate();
+                }
+                if (PlayerOne.equals("AI") && PlayerTwo.equals("AI")) {
+                    AvailableMoves = new ArrayList();
+                    if (timestart < 0) {
+                        timestart = System.currentTimeMillis();
+                    }
+                }
+                CheckWin();
+
+                if (Board.turn == 2 && PlayerTwo.equals("AI")) {
+                    AvailableMoves = new ArrayList();
+                    long time = System.currentTimeMillis() - timestart;
+                    if (time > timerAgent) {
+                        if (null == PlayerTwoAlgorithm) {
                             randomAgentReversi.makeMove(Board);
                         } else {
-                            switch (PlayerOneAlgorithm) {
+                            switch (PlayerTwoAlgorithm) {
                                 case "Minimax":
-                                    minimaxAgentReversi.Depth = PlayerOneDepth;
-                                    minimaxAgentReversi.PlayingFor = true;
+                                    minimaxAgentReversi.Depth = PlayerTwoDepth;
+                                    minimaxAgentReversi.PlayingFor = false;
                                     minimaxAgentReversi.makeMove(Board);
                                     addMovetoLogMoves(minimaxAgentReversi.BestMove);
                                     break;
                                 case "Alpha Beta":
-                                    alphaBetaReversi.Depth = PlayerOneDepth;
-                                    alphaBetaReversi.PlayingFor = true;
+                                    alphaBetaReversi.Depth = PlayerTwoDepth;
+                                    alphaBetaReversi.PlayingFor = false;
+                                    alphaBetaReversi.BestMove = null;
                                     alphaBetaReversi.makeMove(Board);
+
                                     addMovetoLogMoves(alphaBetaReversi.BestMove);
+                                    //System.out.println("MOVE CHOOSEN BY RED " + alphaBetaReversi.BestMove);
                                     break;
                                 default:
                                     randomAgentReversi.makeMove(Board);
@@ -524,50 +596,26 @@ public class GameFrame extends javax.swing.JFrame implements WindowListener {
                         }
                         boardPanel.updateBoardPanel(Board);
                         boardPanel.revalidate();
+                        timestart = -1L;
                     }
-                    if (PlayerOne.equals("AI") && PlayerTwo.equals("AI")) {
-                        if (timestart < 0) {
-                            timestart = System.currentTimeMillis();
-                        }
-                    }
-                    CheckWin();
-
-                    if (Board.turn == 2 && PlayerTwo.equals("AI")) {
-                        long time = System.currentTimeMillis() - timestart;
-                        if (time > timerAgent) {
-                            if (null == PlayerTwoAlgorithm) {
-                                randomAgentReversi.makeMove(Board);
-                            } else {
-                                switch (PlayerTwoAlgorithm) {
-                                    case "Minimax":
-                                        minimaxAgentReversi.Depth = PlayerTwoDepth;
-                                        minimaxAgentReversi.PlayingFor = false;
-                                        minimaxAgentReversi.makeMove(Board);
-                                        addMovetoLogMoves(minimaxAgentReversi.BestMove);
-                                        break;
-                                    case "Alpha Beta":
-                                        alphaBetaReversi.Depth = PlayerTwoDepth;
-                                        alphaBetaReversi.PlayingFor = false;
-                                        alphaBetaReversi.makeMove(Board);
-                                        addMovetoLogMoves(alphaBetaReversi.BestMove);
-                                        break;
-                                    default:
-                                        randomAgentReversi.makeMove(Board);
-                                        addMovetoLogMoves(randomAgentReversi.BestMove);
-                                        break;
-                                }
-                            }
-                            boardPanel.updateBoardPanel(Board);
-                            boardPanel.revalidate();
-                            timestart = -1L;
-                        }
-                    }
-
                 }
-            });
+                if (Board.turn == 1 && PlayerOne.equals("Human")) {
 
-            t.start();
-        }
+                    AvailableMoves = reversi.validMoves(Board);
+                    boardPanel.updateBoardPanel(Board);
+                    boardPanel.revalidate();
+                }
+
+                if (Board.turn == 2 && PlayerTwo.equals("Human")) {
+                    AvailableMoves = reversi.validMoves(Board);
+                    boardPanel.updateBoardPanel(Board);
+                    boardPanel.revalidate();
+                }
+            }
+        });
+
+        ReversiTimer.start();
+
     }
 
     public static void startConnect4() {
@@ -576,7 +624,7 @@ public class GameFrame extends javax.swing.JFrame implements WindowListener {
         boardPanel.revalidate();
 
         if (PlayerTwo.equals("AI") || PlayerOne.equals("AI")) {
-            javax.swing.Timer t = new javax.swing.Timer(1000, new ActionListener() {
+            ConnectFourTimer = new javax.swing.Timer(1000, new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     CheckWin();
                     if (Board.turn == 1 && PlayerOne.equals("AI")) {
@@ -619,6 +667,7 @@ public class GameFrame extends javax.swing.JFrame implements WindowListener {
                         if (time > timerAgent) {
                             if (null == PlayerTwoAlgorithm) {
                                 RandomConnect4.makeMove(Board);
+                                addMovetoLogMoves(RandomConnect4.BestMove);
                             } else {
                                 switch (PlayerTwoAlgorithm) {
                                     case "Minimax":
@@ -648,8 +697,8 @@ public class GameFrame extends javax.swing.JFrame implements WindowListener {
                 }
             });
 
-            t.start();
         }
+        ConnectFourTimer.start();
     }
 
 
@@ -822,6 +871,39 @@ public class GameFrame extends javax.swing.JFrame implements WindowListener {
             System.out.println("PLAYER TWO ALGORITHM? " + PlayerTwoAlgorithm);
             System.out.println("PLAYER TWO DEPTH TO SEARCH? " + PlayerTwoDepth);
         }
+    }
+
+    public static void PlayerTurnAlert(GameFrame c) {
+        JLabel blackAlert = new JLabel();
+        blackAlert.setFont(new Font("Serif", Font.BOLD, 20));
+        JLabel redAlert = new JLabel();
+        redAlert.setFont(new Font("Serif", Font.BOLD, 20));
+        javax.swing.Timer t = new javax.swing.Timer(500, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                if (Board.turn == 1) {
+                    redAlert.setVisible(false);
+                    blackAlert.setBounds(390, 0, 200, 100);
+                    blackAlert.setText("BLACKS TURN");
+                    blackAlert.setVisible(true);
+                    c.add(blackAlert);
+                    c.repaint();
+
+                }
+
+                if (Board.turn == 2) {
+                    blackAlert.setVisible(false);
+                    redAlert.setBounds(390, 820, 200, 100);
+                    redAlert.setText("REDS TURN");
+                    redAlert.setVisible(true);
+                    c.add(redAlert);
+                    c.repaint();
+
+                }
+
+            }
+        });
+        t.start();
     }
 
 }

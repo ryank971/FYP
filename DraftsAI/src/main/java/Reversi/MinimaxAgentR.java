@@ -51,8 +51,14 @@ public class MinimaxAgentR implements Agent {
 
         if (ReversiBoard.turn == 1) {
             ReversiBoard.turn = 2;
+            if (reversiRules.validMoves(ReversiBoard).isEmpty()) {
+                ReversiBoard.turn = 1;
+            }
         } else {
             ReversiBoard.turn = 1;
+            if (reversiRules.validMoves(ReversiBoard).isEmpty()) {
+                ReversiBoard.turn = 2;
+            }
         }
 
     }

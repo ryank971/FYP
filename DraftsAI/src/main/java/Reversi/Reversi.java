@@ -24,7 +24,7 @@ public class Reversi implements Game {
     @Override
     public List validMoves(Board ReversiBoard) {
         List<String> validMoves = new ArrayList<String>();
-        List<String> list = ReversiBoard.allGamePieces(ReversiBoard.turn);
+
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 if (ReversiBoard.board[row][col] == 0) {
@@ -82,7 +82,6 @@ public class Reversi implements Game {
 
     public Boolean checkLineMatch(Board ReversiBoard, int rowMove, int columnMove, int row, int column) {
 
-        
         if (ReversiBoard.board[row][column] == ReversiBoard.turn) {
             return true;
         }
@@ -93,7 +92,7 @@ public class Reversi implements Game {
         if ((column + columnMove < 0) || (column + columnMove > 7)) {
             return false;
         }
-        if(ReversiBoard.board[row][column] == 0){
+        if (ReversiBoard.board[row][column] == 0) {
             return false;
         }
         return checkLineMatch(ReversiBoard, rowMove, columnMove, row + rowMove, column + columnMove);
@@ -101,7 +100,9 @@ public class Reversi implements Game {
 
     @Override
     public Boolean isOver(Board ReversiBoard) {
+
         Boolean gameOver = true;
+
         for (int r = 0; r < 8; r++) {
             for (int c = 0; c < 8; c++) {
                 if (ReversiBoard.board[r][c] == 0) {
@@ -110,6 +111,12 @@ public class Reversi implements Game {
 
             }
         }
+
+        if (validMoves(ReversiBoard).isEmpty()) {
+            System.out.println("GAME OVER");
+            gameOver = true;
+        }
+
         return gameOver;
     }
 
@@ -121,16 +128,15 @@ public class Reversi implements Game {
 
     @Override
     public int CheckWin(Board game) {
-        int playerOne=0;
-        int playerTwo=0;
-        if (isOver(game) == true)  {
+        int playerOne = 0;
+        int playerTwo = 0;
+        if (isOver(game) == true) {
 
             for (int r = 0; r < 8; r++) {
                 for (int c = 0; c < 8; c++) {
                     if (game.board[r][c] == 1) {
                         playerOne++;
-                    }
-                    else if(game.board[r][c] == 2){
+                    } else if (game.board[r][c] == 2) {
                         playerTwo++;
                     }
 
@@ -138,11 +144,17 @@ public class Reversi implements Game {
             }
 
         }
-        if(playerOne > playerTwo)
-        return 1;
-        else  if(playerTwo> playerOne)
-        return 2;
-        else return 0;
+        if (playerOne > playerTwo) {
+            game.PrintGame();
+            System.out.println("^^WINNING BOARD FOR " + game.turn);
+            return 1;
+        } else if (playerTwo > playerOne) {
+            game.PrintGame();
+            System.out.println("^^WINNING BOARD FOR " + game.turn);
+            return 2;
+        } else {
+            return 0;
+        }
     }
 
 }

@@ -12,8 +12,10 @@ import MainFolder.Board;
  * @author Ryan Kelly
  */
 public class HumanPlayerReversi {
+
     public static String BestMove;
-    
+    static Reversi reversiRules = new Reversi();
+
     public static void makeMove(Board Board, String move) {
         BestMove = move;
         int row = Integer.parseInt(move.split(",")[0]);
@@ -34,8 +36,14 @@ public class HumanPlayerReversi {
 
         if (Board.turn == 1) {
             Board.turn = 2;
+            if (reversiRules.validMoves(Board).isEmpty()) {
+                Board.turn = 1;
+            }
         } else {
             Board.turn = 1;
+            if (reversiRules.validMoves(Board).isEmpty()) {
+                Board.turn = 2;
+            }
         }
     }
 

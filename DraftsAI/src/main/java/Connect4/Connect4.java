@@ -39,21 +39,22 @@ public class Connect4 implements Game {
     @Override
     public Boolean isOver(Board connect4Board) {
 
-        if (CheckWin(connect4Board) != 0) {
-            return true;
-        }
-
+        Boolean gameOver = true;
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 if (connect4Board.board[row][col] == 0) {
-                    return false;
+                    gameOver = false;
                 }
             }
         }
 
-        return true;
+        if (CheckWin(connect4Board) != 0) {
+            gameOver = true;
+        }
+
+        return gameOver;
     }
-    
+
     @Override
     public int CheckWin(Board connect4Board) {
         for (int row = 0; row < 8; row++) {
@@ -102,6 +103,5 @@ public class Connect4 implements Game {
     public List validMovesFromPiece(Board game, String postion) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
 
 }

@@ -15,8 +15,9 @@ import MainFolder.Agent;
  * @author Ryan Kelly
  */
 public class MinimaxConnect4 implements Agent {
-    public static int Depth;
+
     Connect4 Connect4Rules = new Connect4();
+    public static int Depth;
     static String MaxMoveString;
     static String MinMoveString;
     public static Boolean PlayingFor;
@@ -24,7 +25,6 @@ public class MinimaxConnect4 implements Agent {
 
     @Override
     public void makeMove(Board connect4Board) {
-
         minimax(connect4Board, Depth, PlayingFor, Depth, connect4Board.turn);
 
         if (PlayingFor == false) {
@@ -46,9 +46,13 @@ public class MinimaxConnect4 implements Agent {
 
     public double minimax(Board game, int depth, Boolean maximizingP, int maxDepth, int turn) {
 
-        if (Connect4Rules.CheckWin(game) == turn) {
+        if (Connect4Rules.CheckWin(game) == game.turn) {
+            game.PrintGame();
+            System.out.println("^^ Winning board for player " + game.turn);
             return 999999;
-        } else if (Connect4Rules.CheckWin(game) != turn && Connect4Rules.CheckWin(game) != 0) {
+        } else if (Connect4Rules.CheckWin(game) != game.turn && Connect4Rules.CheckWin(game) != 0) {
+//            game.PrintGame();
+//            System.out.println("^^ Losing Board for player " + game.turn);
             return -99999;
         } else if (depth == 0) {
             return evaluationFucntion(game.GetBoard());
@@ -124,6 +128,68 @@ public class MinimaxConnect4 implements Agent {
     }
 
     public static double evaluationFucntion(int[][] board) {
+// int scoreForTwo = 10;
+//        int scoreForThree = 1000;
+//        int playerOneScore = 0;
+//        int playerTwoScore = 0;
+//
+//        for (int row = 0; row < 8; row++) {
+//            for (int col = 0; col < 8; col++) {
+//                int playerScore = 0;
+//                int player = board[row][col];
+//                if (player == 0) {
+//                    continue;
+//                }
+//
+//                if (col + 3 < 8 && player == board[row][col + 1]) {
+//
+//                    if (player == board[row][col + 2] && 0 == board[row][col + 3]) {
+//                        playerScore += scoreForThree;
+//                    } else if (0 == board[row][col + 2]){
+//                        playerScore += scoreForTwo;
+//                    }
+//                }
+//
+//                if (row + 3 < 8) {
+//                    if (player == board[row + 1][col]) {
+//
+//                        if (player == board[row + 2][col] && 0 == board[row+3][col]) {
+//                            playerScore += scoreForThree;
+//                        } 
+//                        else if(0 == board[row+2][col]) {
+//                            playerScore += scoreForTwo;
+//                        }
+//
+//                    }
+//
+//                    if (col + 3 < 8 && player == board[row + 1][col + 1]) {
+//                        
+//                        if (player == board[row + 2][col + 2] && 0 == board[row + 3][col + 3] ) {
+//                            playerScore += scoreForThree;
+//                        } else if (0 == board[row + 2][col + 2]){
+//                            playerScore += scoreForTwo;
+//                        }
+//                    }
+//
+//                    if (col - 3 >= 0 && player == board[row + 1][col - 1]) {
+//                        if (player == board[row + 2][col - 2] && 0 == board[row + 3][col - 3]) {
+//                            playerScore += scoreForThree;
+//                        } else if(0 == board[row + 2][col - 2]){
+//                            playerScore += scoreForTwo;
+//                        }
+//                    }
+//
+//                }
+//                if (player == 1) {
+//                    playerOneScore += playerScore;
+//                } else if (player == 2) {
+//                    playerTwoScore += playerScore;
+//                }
+//
+//            }
+//        }
+//
+//        return playerOneScore - playerTwoScore;
         return 0;
 
     }

@@ -54,6 +54,15 @@ public class TilePanel extends JLabel implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent arg0) {
 
+    }
+
+    @Override
+    public void mousePressed(MouseEvent arg0) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent arg0) {
         if (menu.PlayCheckers) {
             if (Board.turn == 2 && PlayerTwo.equals("Human")) {
 
@@ -131,16 +140,6 @@ public class TilePanel extends JLabel implements MouseListener {
                 }
             });
         }
-    }
-
-    @Override
-    public void mousePressed(MouseEvent arg0) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent arg0) {
-
     }
 
     @Override

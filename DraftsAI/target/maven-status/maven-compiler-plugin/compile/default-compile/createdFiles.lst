@@ -10,6 +10,7 @@ Reversi\HumanPlayerReversi.class
 GUI\TilePanel$2.class
 MainFolder\Game.class
 GUI\TilePanel$1.class
+GUI\GameFrame$10.class
 GUI\GameFrame$6.class
 GUI\TilePanel.class
 GUI\GameFrame$9.class
