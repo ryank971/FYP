@@ -8,33 +8,29 @@ package Checkers;
 import MainFolder.Board;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import MainFolder.Agent;
 
 /**
  *
  * @author Ryan Kelly
  */
-public class AlphaBetaAgent implements Agent {
+public class CheckersMinimax implements Agent {
 
     Checkers checkerRules = new Checkers();
-
     static String MaxMoveString;
     static String MinMoveString;
-    public static Boolean PlayingFor;
-    public static String BestMove;
-    public static int Depth;
+
 
     @Override
-    public void makeMove(Board CheckerBoard) {
-
-        alphaBeta(CheckerBoard, Depth, PlayingFor, Depth, CheckerBoard.turn, -9999999, 9999999);
-
-        if (PlayingFor == false) {
+    public String makeMove(Board game, int depth, boolean playingFor) {
+        String BestMove;
+        minimax(game, depth, playingFor, depth, game.turn);
+        if (playingFor == false) {
             BestMove = MinMoveString;
         } else {
             BestMove = MaxMoveString;
         }
-
         String current = BestMove.split("-")[0];
         String move = BestMove.split("-")[1];
         String[] CurrentS = current.split(",");
@@ -49,54 +45,55 @@ public class AlphaBetaAgent implements Agent {
 
         }
 
-        if (checkerRules.isDoubleJump(CheckerBoard, Current, Move)) {
-            int turn = CheckerBoard.turn;
-            int[] middleMove = ReturnDoubleJump(CheckerBoard, Current, Move);
-            SimulatePlay(CheckerBoard, Current[0] + "," + Current[1], middleMove[0] + "," + middleMove[1]);
-            CheckerBoard.turn = turn;
-            SimulatePlay(CheckerBoard, middleMove[0] + "," + middleMove[1], Move[0] + "," + Move[1]);
+        if (checkerRules.isDoubleJump(game, Current, Move)) {
+            int turn = game.turn;
+            int[] middleMove = ReturnDoubleJump(game, Current, Move);
+            SimulatePlay(game, Current[0] + "," + Current[1], middleMove[0] + "," + middleMove[1]);
+            game.turn = turn;
+            SimulatePlay(game, middleMove[0] + "," + middleMove[1], Move[0] + "," + Move[1]);
 
         } else {
 
             if (Move[0] == Current[0] + 2 && Move[1] == Current[1] + 2) {
-                CheckerBoard.board[Current[0] + 1][Current[1] + 1] = 0;
+                game.board[Current[0] + 1][Current[1] + 1] = 0;
             } else if (Move[0] == Current[0] + 2 && Move[1] == Current[1] - 2) {
-                CheckerBoard.board[Current[0] + 1][Current[1] - 1] = 0;
+                game.board[Current[0] + 1][Current[1] - 1] = 0;
             } else if (Move[0] == Current[0] - 2 && Move[1] == Current[1] + 2) {
-                CheckerBoard.board[Current[0] - 1][Current[1] + 1] = 0;
+                game.board[Current[0] - 1][Current[1] + 1] = 0;
             } else if (Move[0] == Current[0] - 2 && Move[1] == Current[1] - 2) {
-                CheckerBoard.board[Current[0] - 1][Current[1] - 1] = 0;
+                game.board[Current[0] - 1][Current[1] - 1] = 0;
             }
 
-            if (CheckerBoard.turn == 1) {
+            if (game.turn == 1) {
                 if (Move[0] == 7) {
-                    CheckerBoard.board[Move[0]][Move[1]] = CheckerBoard.turn + 2;
-                    CheckerBoard.board[Current[0]][Current[1]] = 0;
+                    game.board[Move[0]][Move[1]] = game.turn + 2;
+                    game.board[Current[0]][Current[1]] = 0;
                 } else {
-                    CheckerBoard.board[Move[0]][Move[1]] = CheckerBoard.board[Current[0]][Current[1]];
-                    CheckerBoard.board[Current[0]][Current[1]] = 0;
+                    game.board[Move[0]][Move[1]] = game.board[Current[0]][Current[1]];
+                    game.board[Current[0]][Current[1]] = 0;
                 }
-            } else if (CheckerBoard.turn == 2) {
+            } else if (game.turn == 2) {
                 if (Move[0] == 0) {
-                    CheckerBoard.board[Move[0]][Move[1]] = CheckerBoard.turn + 2;
-                    CheckerBoard.board[Current[0]][Current[1]] = 0;
+                    game.board[Move[0]][Move[1]] = game.turn + 2;
+                    game.board[Current[0]][Current[1]] = 0;
                 } else {
-                    CheckerBoard.board[Move[0]][Move[1]] = CheckerBoard.board[Current[0]][Current[1]];
-                    CheckerBoard.board[Current[0]][Current[1]] = 0;
+                    game.board[Move[0]][Move[1]] = game.board[Current[0]][Current[1]];
+                    game.board[Current[0]][Current[1]] = 0;
                 }
 
             }
 
-            if (CheckerBoard.turn == 1) {
-                CheckerBoard.turn = 2;
+            if (game.turn == 1) {
+                game.turn = 2;
             } else {
-                CheckerBoard.turn = 1;
+                game.turn = 1;
             }
         }
+        return BestMove;
 
     }
 
-    public double alphaBeta(Board game, int depth, Boolean maximizingP, int maxDepth, int turn, double alpha, double beta) {
+    public double minimax(Board game, int depth, Boolean maximizingP, int maxDepth, int turn) {
 
         if (win(game.GetBoard(), turn) == true) {
             return 999999;
@@ -112,17 +109,14 @@ public class AlphaBetaAgent implements Agent {
             for (int i = 0; i < validMoves.size(); i++) {
 
                 Board Temp = BuildFromNode(game, validMoves.get(i));
-                double val = alphaBeta(Temp, depth - 1, false, maxDepth, turn, alpha, beta);
+                double val = minimax(Temp, depth - 1, false, maxDepth, turn);
                 if (val > bestValueMax) {
                     bestValueMax = val;
                     if (depth == maxDepth) {
                         MaxMoveString = validMoves.get(i);
                     }
                 }
-                alpha = max(alpha, bestValueMax);
-                if (beta <= alpha) {
-                    break;
-                }
+
             }
 
             return bestValueMax;
@@ -131,16 +125,12 @@ public class AlphaBetaAgent implements Agent {
             for (int i = 0; i < validMoves.size(); i++) {
 
                 Board Temp = BuildFromNode(game, validMoves.get(i));
-                double val = alphaBeta(Temp, depth - 1, true, maxDepth, turn, alpha, beta);
+                double val = minimax(Temp, depth - 1, true, maxDepth, turn);
                 if (val < bestValueMin) {
                     bestValueMin = val;
                     if (depth == maxDepth) {
                         MinMoveString = validMoves.get(i);
                     }
-                }
-                beta = min(beta, bestValueMin);
-                if (beta <= alpha) {
-                    break;
                 }
             }
 
@@ -170,7 +160,6 @@ public class AlphaBetaAgent implements Agent {
         for (int r = 0; r < 8; r++) {
             for (int c = 0; c < 8; c++) {
                 if (board[r][c] == turn || board[r][c] == turn + 2) {
-                    //System.out.println("GAME OVER");
                     lose = false;
                 }
 
@@ -180,11 +169,11 @@ public class AlphaBetaAgent implements Agent {
         return lose;
     }
 
-    public static Board BuildFromNode(Board CheckerBoard, String move) {
-        int[][] copyBoard = cloneBoard(CheckerBoard.board);
-        Board CopyGame = new Board(copyBoard, CheckerBoard.turn);
+    public Board BuildFromNode(Board board, String move) {
+        int[][] copyBoard = cloneBoard(board.board);
+        Board CopyGame = new Board(copyBoard, board.turn);
         int[][] temp = cloneBoard(CopyGame.board);
-        Board Temp = new Board(temp, CheckerBoard.turn);
+        Board Temp = new Board(temp, board.turn);
         String moves[] = move.split("-");
         SimulatePlay(Temp, moves[0], moves[1]);
         return Temp;
@@ -299,17 +288,16 @@ public class AlphaBetaAgent implements Agent {
             for (int j = 2; j >= -2; j -= 4) {
                 int[] newMove = {Move[0] - i, Move[1] + j};
                 if (Checkers.isSingleJump(CheckerBoard, Current, newMove) == true) {
-
-                    //System.out.println("MADE IT HERE");
-                    //System.out.println(game.turn);
                     if (Checkers.isSingleJump(CheckerBoard, newMove, Move) == true) {
                         return newMove;
                     }
                 }
-                //System.out.println("HERE: "+newMove[0]+","+newMove[1]);
             }
         }
         return null;
 
     }
+
+
+
 }

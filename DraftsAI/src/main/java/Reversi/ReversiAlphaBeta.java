@@ -8,58 +8,52 @@ package Reversi;
 import MainFolder.Board;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import MainFolder.Agent;
 
 /**
  *
  * @author Ryan Kelly
  */
-public class MinimaxAgentR implements Agent {
+public class ReversiAlphaBeta implements Agent {
 
-    Reversi reversiRules = new Reversi();
+    static Reversi reversiRules = new Reversi();
     static String MaxMoveString;
     static String MinMoveString;
-    public static Boolean PlayingFor;
-    public static  String BestMove ;
-        public static int Depth;
+
 
     @Override
-    public void makeMove(Board ReversiBoard) {
+    public String makeMove(Board game, int depth, boolean playingFor) {
+        String BestMove;
+        alphaBeta(game, depth, playingFor, depth, game.turn, -9999999, 9999999);
 
-        minimax(ReversiBoard, Depth, PlayingFor, Depth, ReversiBoard.turn);
-        if (PlayingFor == false) {
+        if (playingFor == false) {
             BestMove = MinMoveString;
         } else {
             BestMove = MaxMoveString;
         }
+
         int row = Integer.parseInt(BestMove.split(",")[0]);
         int col = Integer.parseInt(BestMove.split(",")[1]);
 
-        ReversiBoard.board[row][col] = ReversiBoard.turn;
+        ImplementMove(game, -1, -1, row, col);
+        ImplementMove(game, -1, 0, row, col);
+        ImplementMove(game, -1, 1, row, col);
 
-        ImplementMove(ReversiBoard, -1, -1, row, col);
-        ImplementMove(ReversiBoard, -1, 0, row, col);
-        ImplementMove(ReversiBoard, -1, 1, row, col);
+        ImplementMove(game, 0, -1, row, col);
+        ImplementMove(game, 0, 1, row, col);
 
-        ImplementMove(ReversiBoard, 0, -1, row, col);
-        ImplementMove(ReversiBoard, 0, 1, row, col);
+        ImplementMove(game, 1, -1, row, col);
+        ImplementMove(game, 1, 0, row, col);
+        ImplementMove(game, 1, 1, row, col);
 
-        ImplementMove(ReversiBoard, 1, -1, row, col);
-        ImplementMove(ReversiBoard, 1, 0, row, col);
-        ImplementMove(ReversiBoard, 1, 1, row, col);
+        game.board[row][col] = game.turn;
 
-        if (ReversiBoard.turn == 1) {
-            ReversiBoard.turn = 2;
-            if (reversiRules.validMoves(ReversiBoard).isEmpty()) {
-                ReversiBoard.turn = 1;
-            }
+        if (game.turn == 1) {
+            game.turn = 2;
         } else {
-            ReversiBoard.turn = 1;
-            if (reversiRules.validMoves(ReversiBoard).isEmpty()) {
-                ReversiBoard.turn = 2;
-            }
+            game.turn = 1;
         }
+        return BestMove;
 
     }
 
@@ -88,11 +82,11 @@ public class MinimaxAgentR implements Agent {
 
     }
 
-    public double minimax(Board game, int depth, Boolean maximizingP, int maxDepth, int turn) {
+    public double alphaBeta(Board game, int depth, Boolean maximizingP, int maxDepth, int turn, double alpha, double beta) {
 
-        if (win(game.GetBoard(), turn) == true) {
+        if (reversiRules.CheckWin(game) == game.turn) {
             return 999999;
-        } else if (lose(game.GetBoard(), turn) == true) {
+        } else if (reversiRules.CheckWin(game) != game.turn && reversiRules.CheckWin(game) != 0) {
             return -99999;
         } else if (depth == 0) {
             return evaluationFucntion(game.GetBoard());
@@ -100,16 +94,21 @@ public class MinimaxAgentR implements Agent {
         List<String> validMoves = reversiRules.validMoves(game);
         if (maximizingP == true) {
             double bestValueMax = -9999999;
+
             for (int i = 0; i < validMoves.size(); i++) {
+
                 Board Temp = BuildFromNode(game, validMoves.get(i));
-                double val = minimax(Temp, depth - 1, false, maxDepth, turn);
+                double val = alphaBeta(Temp, depth - 1, false, maxDepth, turn, alpha, beta);
                 if (val > bestValueMax) {
                     bestValueMax = val;
                     if (depth == maxDepth) {
                         MaxMoveString = validMoves.get(i);
                     }
                 }
-
+                alpha = max(alpha, bestValueMax);
+                if (beta <= alpha) {
+                    break;
+                }
             }
 
             return bestValueMax;
@@ -118,12 +117,16 @@ public class MinimaxAgentR implements Agent {
             for (int i = 0; i < validMoves.size(); i++) {
 
                 Board Temp = BuildFromNode(game, validMoves.get(i));
-                double val = minimax(Temp, depth - 1, true, maxDepth, turn);
+                double val = alphaBeta(Temp, depth - 1, true, maxDepth, turn, alpha, beta);
                 if (val < bestValueMin) {
                     bestValueMin = val;
                     if (depth == maxDepth) {
                         MinMoveString = validMoves.get(i);
                     }
+                }
+                beta = min(beta, bestValueMin);
+                if (beta <= alpha) {
+                    break;
                 }
             }
 
@@ -178,6 +181,22 @@ public class MinimaxAgentR implements Agent {
         return result;
     }
 
+    static public double max(double one, double two) {
+        if (one > two) {
+            return one;
+        } else {
+            return two;
+        }
+    }
+
+    static public double min(double one, double two) {
+        if (one < two) {
+            return one;
+        } else {
+            return two;
+        }
+    }
+
     public static double evaluationFucntion(int[][] board) {
         double playerOne = 0;
         double playerTwo = 0;
@@ -193,39 +212,8 @@ public class MinimaxAgentR implements Agent {
         return playerOne - playerTwo;
     }
 
-    public static Boolean win(int[][] board, int turn) {
-        Boolean win = true;
-        int Opponent;
-        if (turn == 1) {
-            Opponent = 2;
-        } else {
-            Opponent = 1;
-        }
 
-        for (int r = 0; r < 8; r++) {
-            for (int c = 0; c < 8; c++) {
-                if (board[r][c] == Opponent) {
-                    win = false;
-                }
 
-            }
-        }
 
-        return win;
-    }
-
-    public static Boolean lose(int[][] board, int turn) {
-        Boolean lose = true;
-        for (int r = 0; r < 8; r++) {
-            for (int c = 0; c < 8; c++) {
-                if (board[r][c] == turn) {
-                    lose = false;
-                }
-
-            }
-        }
-
-        return lose;
-    }
 
 }

@@ -5,30 +5,16 @@
  */
 package GUI;
 
-import Checkers.HumanPlayer;
-import Connect4.HumanPlayerConnectFour;
-import static GUI.GameFrame.AvailableMoves;
-import static GUI.GameFrame.Board;
-import static GUI.GameFrame.CheckWin;
-import static GUI.GameFrame.PlayerOne;
-import static GUI.GameFrame.PlayerTwo;
-import static GUI.GameFrame.addMovetoLogMoves;
-import static GUI.GameFrame.boardPanel;
-import static GUI.GameFrame.connect4;
-import static GUI.GameFrame.menu;
-import static GUI.GameFrame.reversi;
-import static GUI.Menu.minimaxAgent;
-import Reversi.HumanPlayerReversi;
+import Checkers.CheckersHuman;
+import Connect4.Connect4Human;
+import static GUI.BoardPanel.checkers;
+import static GUI.GameFrame.*;
+import Reversi.ReversiHuman;
 import java.awt.Color;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.BorderFactory;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
+
 
 /**
  *
@@ -36,9 +22,9 @@ import javax.swing.SwingUtilities;
  */
 public class TilePanel extends JLabel implements MouseListener {
 
-    HumanPlayer playerCheckers = new HumanPlayer();
-    HumanPlayerReversi playerReversi = new HumanPlayerReversi();
-    HumanPlayerConnectFour playerConnectFour = new HumanPlayerConnectFour();
+    CheckersHuman playerCheckers = new CheckersHuman();
+    ReversiHuman playerReversi = new ReversiHuman();
+    Connect4Human playerConnectFour = new Connect4Human();
     static int[] Move;
     static int[] Current;
     int Row;
@@ -68,8 +54,13 @@ public class TilePanel extends JLabel implements MouseListener {
 
                 if (Current != null && !(AvailableMoves.isEmpty())) {
                     Move = new int[]{Row, Column};
-                    playerCheckers.makeMove(Board, Current[0] + "," + Current[1], Move[0] + "," + Move[1]);
-                    addMovetoLogMoves(playerCheckers.BestMove);
+                    List<String> validMoves = checkers.validMoves(Board);
+                    for (String move : validMoves) {
+                        if (move.equals(Current[0] + "," + Current[1] + "-" + Move[0] + "," + Move[1])) {
+                            playerCheckers.makeMove(Board, Current[0] + "," + Current[1], Move[0] + "," + Move[1]);
+                            addMovetoLogMoves(playerCheckers.BestMove);
+                        }
+                    }
 
                 }
 
@@ -86,8 +77,13 @@ public class TilePanel extends JLabel implements MouseListener {
             } else if (Board.turn == 1 && PlayerOne.equals("Human")) {
                 if (Current != null && !(AvailableMoves.isEmpty())) {
                     Move = new int[]{Row, Column};
-                    playerCheckers.makeMove(Board, Current[0] + "," + Current[1], Move[0] + "," + Move[1]);
-                    addMovetoLogMoves(playerCheckers.BestMove);
+                    List<String> validMoves = checkers.validMoves(Board);
+                    for (String move : validMoves) {
+                        if (move.equals(Current[0] + "," + Current[1] + "-" + Move[0] + "," + Move[1])) {
+                            playerCheckers.makeMove(Board, Current[0] + "," + Current[1], Move[0] + "," + Move[1]);
+                            addMovetoLogMoves(playerCheckers.BestMove);
+                        }
+                    }
 
                 }
 
@@ -103,52 +99,91 @@ public class TilePanel extends JLabel implements MouseListener {
             }
 
         } else if (menu.PlayReversi) {
-            Move = new int[]{Row, Column};
-            List<String> validMoves = reversi.validMoves(Board);
-            for (String move : validMoves) {
-
-                if (move.equals(Move[0] + "," + Move[1])) {
-                    System.out.println(Board.turn + " made move = " + Move);
-                    playerReversi.makeMove(Board, Move[0] + "," + Move[1]);
-                    addMovetoLogMoves(playerReversi.BestMove);
+            if (Board.turn == 2 && PlayerTwo.equals("Human")) {
+                Move = new int[]{Row, Column};
+                List<String> validMoves = reversi.validMoves(Board);
+                for (String move : validMoves) {
+                    if (move.equals(Move[0] + "," + Move[1])) {
+                        System.out.println(Board.turn + " made move = " + Move);
+                        playerReversi.makeMove(Board, Move[0] + "," + Move[1]);
+                        addMovetoLogMoves(playerReversi.BestMove);
+                    }
                 }
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        boardPanel.updateBoardPanel(Board);
+                        boardPanel.revalidate();
+                    }
+                });
+            } else if (Board.turn == 1 && PlayerOne.equals("Human")) {
+                Move = new int[]{Row, Column};
+                List<String> validMoves = reversi.validMoves(Board);
+                for (String move : validMoves) {
+                    if (move.equals(Move[0] + "," + Move[1])) {
+                        System.out.println(Board.turn + " made move = " + Move);
+                        playerReversi.makeMove(Board, Move[0] + "," + Move[1]);
+                        addMovetoLogMoves(playerReversi.BestMove);
+                    }
+                }
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        boardPanel.updateBoardPanel(Board);
+                        boardPanel.revalidate();
+                    }
+                });
             }
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    boardPanel.updateBoardPanel(Board);
-                    boardPanel.revalidate();
-                }
-            });
-        } else {
+        } else if (menu.PlayConnect4) {
+            if (Board.turn == 2 && PlayerTwo.equals("Human")) {
+                Move = new int[]{Row, Column};
+                List<String> validMoves = connect4.validMoves(Board);
+                for (String move : validMoves) {
 
-            Move = new int[]{Row, Column};
-            List<String> validMoves = connect4.validMoves(Board);
-            for (String move : validMoves) {
-
-                if (move.equals(Move[0] + "," + Move[1])) {
-                    System.out.println(Board.turn + " made move = " + Move);
-                    playerConnectFour.makeMove(Board, Move[0] + "," + Move[1]);
-                    addMovetoLogMoves(playerConnectFour.BestMove);
+                    if (move.equals(Move[0] + "," + Move[1])) {
+                        System.out.println(Board.turn + " made move = " + Move);
+                        playerConnectFour.makeMove(Board, Move[0] + "," + Move[1]);
+                        addMovetoLogMoves(playerConnectFour.BestMove);
+                    }
                 }
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        boardPanel.updateBoardPanel(Board);
+                        boardPanel.revalidate();
+                    }
+                });
+            } else if (Board.turn == 1 && PlayerOne.equals("Human")) {
+                Move = new int[]{Row, Column};
+                List<String> validMoves = connect4.validMoves(Board);
+                for (String move : validMoves) {
+
+                    if (move.equals(Move[0] + "," + Move[1])) {
+                        System.out.println(Board.turn + " made move = " + Move);
+                        playerConnectFour.makeMove(Board, Move[0] + "," + Move[1]);
+                        addMovetoLogMoves(playerConnectFour.BestMove);
+                    }
+                }
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        boardPanel.updateBoardPanel(Board);
+                        boardPanel.revalidate();
+                    }
+                });
             }
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    boardPanel.updateBoardPanel(Board);
-                    boardPanel.revalidate();
-                }
-            });
         }
     }
 
     @Override
-    public void mouseEntered(MouseEvent arg0) {
+    public void mouseEntered(MouseEvent arg0
+    ) {
 
     }
 
     @Override
-    public void mouseExited(MouseEvent arg0) {
+    public void mouseExited(MouseEvent arg0
+    ) {
 
     }
 

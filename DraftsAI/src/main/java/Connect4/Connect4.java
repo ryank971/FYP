@@ -99,9 +99,6 @@ public class Connect4 implements Game {
         return 0;
     }
 
-    @Override
-    public List validMovesFromPiece(Board game, String postion) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+
 
 }

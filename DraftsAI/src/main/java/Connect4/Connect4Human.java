@@ -11,7 +11,7 @@ import MainFolder.Board;
  *
  * @author Ryan Kelly
  */
-public class HumanPlayerConnectFour {
+public class Connect4Human {
         public static String BestMove;
         public static void makeMove(Board Board, String move) {
             BestMove = move;

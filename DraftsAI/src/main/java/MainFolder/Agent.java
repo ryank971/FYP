@@ -14,7 +14,5 @@ import java.util.Random;
  * @author Ryan Kelly
  */
 public interface Agent {
-    
-
-    public abstract void makeMove(Board game);
+    public abstract String makeMove(Board game, int depth, boolean playingFor);
 }

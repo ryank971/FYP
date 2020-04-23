@@ -12,7 +12,7 @@ import MainFolder.Agent;
  *
  * @author Ryan Kelly
  */
-public class HumanPlayer {
+public class CheckersHuman {
 
     static Checkers checkers = new Checkers();
     public static  String BestMove;
@@ -144,14 +144,10 @@ public class HumanPlayer {
             for (int j = 2; j >= -2; j -= 4) {
                 int[] newMove = {Move[0] - i, Move[1] + j};
                 if (Checkers.isSingleJump(CheckerBoard, Current, newMove) == true) {
-
-                    //System.out.println("MADE IT HERE");
-                    //System.out.println(game.turn);
                     if (Checkers.isSingleJump(CheckerBoard, newMove, Move) == true) {
                         return newMove;
                     }
                 }
-                //System.out.println("HERE: "+newMove[0]+","+newMove[1]);
             }
         }
         return null;

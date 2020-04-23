@@ -14,14 +14,15 @@ import MainFolder.Agent;
  *
  * @author Ryan Kelly
  */
-public class RandomConnectFour implements Agent {
+public class Connect4Random implements Agent {
 
     public static String BestMove;
     Connect4 connect4Rules = new Connect4();
 
     @Override
-    public void makeMove(Board connect4Board) {
-        List<String> validMoves = connect4Rules.validMoves(connect4Board);
+    public String makeMove(Board game, int depth, boolean playingFor) {
+        String BestMove;
+        List<String> validMoves = connect4Rules.validMoves(game);
 
         Random rand = new Random();
         int a = rand.nextInt(validMoves.size());
@@ -30,14 +31,16 @@ public class RandomConnectFour implements Agent {
         int row = Integer.parseInt(Move.split(",")[0]);
         int col = Integer.parseInt(Move.split(",")[1]);
 
-        connect4Board.board[row][col] = connect4Board.turn;
+        game.board[row][col] = game.turn;
 
-        if (connect4Board.turn == 1) {
-            connect4Board.turn = 2;
+        if (game.turn == 1) {
+            game.turn = 2;
         } else {
-            connect4Board.turn = 1;
+            game.turn = 1;
         }
-
+        return BestMove;
     }
+
+
 
 }

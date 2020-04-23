@@ -14,20 +14,17 @@ import MainFolder.Agent;
  *
  * @author Ryan Kelly
  */
-public class AlphaBetaConnectFour implements Agent {
+public class Connect4AlphaBeta implements Agent {
 
     Connect4 Connect4Rules = new Connect4();
     static String MaxMoveString;
     static String MinMoveString;
-    public static Boolean PlayingFor;
-    public static String BestMove;
-    public static int Depth;
 
     @Override
-    public void makeMove(Board connect4Board) {
-
-        alphaBeta(connect4Board, Depth, PlayingFor, Depth, connect4Board.turn, -9999999, 9999999);
-        if (PlayingFor == false) {
+    public String makeMove(Board game, int depth, boolean playingFor) {
+        String BestMove;
+        alphaBeta(game, depth, playingFor, depth, game.turn, -9999999, 9999999);
+        if (playingFor == false) {
             BestMove = MinMoveString;
         } else {
             BestMove = MaxMoveString;
@@ -35,16 +32,17 @@ public class AlphaBetaConnectFour implements Agent {
         int row = Integer.parseInt(BestMove.split(",")[0]);
         int col = Integer.parseInt(BestMove.split(",")[1]);
 
-        connect4Board.board[row][col] = connect4Board.turn;
+        game.board[row][col] = game.turn;
 
-        if (connect4Board.turn == 1) {
-            connect4Board.turn = 2;
+        if (game.turn == 1) {
+            game.turn = 2;
         } else {
-            connect4Board.turn = 1;
+            game.turn = 1;
         }
+        return BestMove;
     }
 
-    public double alphaBeta(Board game, int depth, Boolean maximizingP, int maxDepth, int turn, double alpha, double beta) {
+    public  double alphaBeta(Board game, int depth, Boolean maximizingP, int maxDepth, int turn, double alpha, double beta) {
 
         if (Connect4Rules.CheckWin(game) == turn) {
             return 999999;
@@ -96,7 +94,7 @@ public class AlphaBetaConnectFour implements Agent {
         } else {
             return 99999999;
         }
-
+        
     }
 
     public static Board BuildFromNode(Board connect4Board, String move) {
@@ -151,7 +149,7 @@ public class AlphaBetaConnectFour implements Agent {
 
                     if (player == board[row][col + 2] && 0 == board[row][col + 3]) {
                         playerScore += scoreForThree;
-                    } else if (0 == board[row][col + 2]){
+                    } else if (0 == board[row][col + 2]) {
                         playerScore += scoreForTwo;
                     }
                 }
@@ -159,20 +157,19 @@ public class AlphaBetaConnectFour implements Agent {
                 if (row + 3 < 8) {
                     if (player == board[row + 1][col]) {
 
-                        if (player == board[row + 2][col] && 0 == board[row+3][col]) {
+                        if (player == board[row + 2][col] && 0 == board[row + 3][col]) {
                             playerScore += scoreForThree;
-                        } 
-                        else if(0 == board[row+2][col]) {
+                        } else if (0 == board[row + 2][col]) {
                             playerScore += scoreForTwo;
                         }
 
                     }
 
                     if (col + 3 < 8 && player == board[row + 1][col + 1]) {
-                        
-                        if (player == board[row + 2][col + 2] && 0 == board[row + 3][col + 3] ) {
+
+                        if (player == board[row + 2][col + 2] && 0 == board[row + 3][col + 3]) {
                             playerScore += scoreForThree;
-                        } else if (0 == board[row + 2][col + 2]){
+                        } else if (0 == board[row + 2][col + 2]) {
                             playerScore += scoreForTwo;
                         }
                     }
@@ -180,7 +177,7 @@ public class AlphaBetaConnectFour implements Agent {
                     if (col - 3 >= 0 && player == board[row + 1][col - 1]) {
                         if (player == board[row + 2][col - 2] && 0 == board[row + 3][col - 3]) {
                             playerScore += scoreForThree;
-                        } else if(0 == board[row + 2][col - 2]){
+                        } else if (0 == board[row + 2][col - 2]) {
                             playerScore += scoreForTwo;
                         }
                     }
@@ -196,10 +193,7 @@ public class AlphaBetaConnectFour implements Agent {
         }
 
         return playerOneScore - playerTwoScore;
- //       return 0;
 
-    
-        
     }
 
     static public double max(double one, double two) {
@@ -217,5 +211,6 @@ public class AlphaBetaConnectFour implements Agent {
             return two;
         }
     }
+
 
 }

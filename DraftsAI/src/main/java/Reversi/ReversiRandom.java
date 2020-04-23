@@ -15,14 +15,15 @@ import MainFolder.Agent;
  *
  * @author Ryan Kelly
  */
-public class RandomAgentR implements Agent {
+public class ReversiRandom implements Agent {
     public static String BestMove;
     Reversi reversiRules = new Reversi();
 
     @Override
-    public void makeMove(Board ReversiBoard) {
+    public String makeMove(Board game, int depth, boolean playingFor) {
 
-        List<String> validMoves = reversiRules.validMoves(ReversiBoard);
+        String BestMove="";
+        List<String> validMoves = reversiRules.validMoves(game);
 
         if (!validMoves.isEmpty()) {
             Random rand = new Random();
@@ -32,31 +33,32 @@ public class RandomAgentR implements Agent {
             int row = Integer.parseInt(Move.split(",")[0]);
             int col = Integer.parseInt(Move.split(",")[1]);
             
-            ReversiBoard.board[row][col] = ReversiBoard.turn;
+            game.board[row][col] = game.turn;
 
-            ImplementMove(ReversiBoard, -1, -1, row, col);
-            ImplementMove(ReversiBoard, -1, 0, row, col);
-            ImplementMove(ReversiBoard, -1, 1, row, col);
+            ImplementMove(game, -1, -1, row, col);
+            ImplementMove(game, -1, 0, row, col);
+            ImplementMove(game, -1, 1, row, col);
 
-            ImplementMove(ReversiBoard, 0, -1, row, col);
-            ImplementMove(ReversiBoard, 0, 1, row, col);
+            ImplementMove(game, 0, -1, row, col);
+            ImplementMove(game, 0, 1, row, col);
 
-            ImplementMove(ReversiBoard, 1, -1, row, col);
-            ImplementMove(ReversiBoard, 1, 0, row, col);
-            ImplementMove(ReversiBoard, 1, 1, row, col);
+            ImplementMove(game, 1, -1, row, col);
+            ImplementMove(game, 1, 0, row, col);
+            ImplementMove(game, 1, 1, row, col);
 
-            if (ReversiBoard.turn == 1) {
-                ReversiBoard.turn = 2;
+            if (game.turn == 1) {
+                game.turn = 2;
             } else {
-                ReversiBoard.turn = 1;
+                game.turn = 1;
             }
         } else {
-            if (ReversiBoard.turn == 1) {
-                ReversiBoard.turn = 2;
+            if (game.turn == 1) {
+                game.turn = 2;
             } else {
-                ReversiBoard.turn = 1;
+                game.turn = 1;
             }
         }
+        return BestMove;
     }
 
     public boolean ImplementMove(Board ReversiBoard, int directionRow, int directionCol, int row, int column) {
@@ -83,5 +85,7 @@ public class RandomAgentR implements Agent {
         }
 
     }
+
+
 
 }

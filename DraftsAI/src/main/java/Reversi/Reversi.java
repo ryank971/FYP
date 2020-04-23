@@ -6,7 +6,6 @@
 package Reversi;
 
 import MainFolder.Board;
-import static Checkers.Checkers.isValidMove;
 import java.util.ArrayList;
 import java.util.List;
 import MainFolder.Game;
@@ -113,17 +112,10 @@ public class Reversi implements Game {
         }
 
         if (validMoves(ReversiBoard).isEmpty()) {
-            System.out.println("GAME OVER");
             gameOver = true;
         }
 
         return gameOver;
-    }
-
-    @Override
-    public List validMovesFromPiece(Board ReversiBoard, String postion
-    ) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -145,12 +137,10 @@ public class Reversi implements Game {
 
         }
         if (playerOne > playerTwo) {
-            game.PrintGame();
-            System.out.println("^^WINNING BOARD FOR " + game.turn);
+
             return 1;
         } else if (playerTwo > playerOne) {
-            game.PrintGame();
-            System.out.println("^^WINNING BOARD FOR " + game.turn);
+
             return 2;
         } else {
             return 0;

@@ -11,7 +11,7 @@ import MainFolder.Board;
  *
  * @author Ryan Kelly
  */
-public class HumanPlayerReversi {
+public class ReversiHuman {
 
     public static String BestMove;
     static Reversi reversiRules = new Reversi();
