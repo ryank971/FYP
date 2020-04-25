@@ -19,7 +19,6 @@ import java.util.logging.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
-
 /**
  *
  * @author Ryan Kelly
@@ -60,6 +59,8 @@ public class GameFrame extends javax.swing.JFrame implements WindowListener {
     static int PlayerTwoDepth;
     static String PlayerOne;
     static String PlayerTwo;
+    static List<Integer> TurnRecord = new ArrayList<Integer>();
+    static List<int[][]> BoardRecord = new ArrayList<int[][]>();
 
     public GameFrame() {
         initComponents();
@@ -122,10 +123,76 @@ public class GameFrame extends javax.swing.JFrame implements WindowListener {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("SwitchSides");
+                String tempAlgorithm;
+                int tempDepth;
+                if (PlayerOne.equals("AI")) {
+                    if (PlayerTwo.equals("Human")) {
+                        PlayerTwo = "AI";
+                        PlayerTwoAlgorithm = PlayerOneAlgorithm;
+                        PlayerTwoDepth = PlayerOneDepth;
+                        PlayerOne = "Human";
+                    } else if (PlayerTwo.equals("AI")) {
+                        tempAlgorithm = PlayerTwoAlgorithm;
+                        tempDepth = PlayerTwoDepth;
+                        PlayerTwoAlgorithm = PlayerOneAlgorithm;
+                        PlayerTwoDepth = PlayerOneDepth;
+                        PlayerOneAlgorithm = tempAlgorithm;
+                        PlayerOneDepth = tempDepth;
+                    }
+                } else if (PlayerOne.equals("Human")) {
+                    if (PlayerTwo.equals("AI")) {
+                        PlayerOne = "AI";
+                        PlayerOneAlgorithm = PlayerTwoAlgorithm;
+                        PlayerOneDepth = PlayerTwoDepth;
+                        PlayerTwo = "Human";
+                    }
+                }
+                JOptionPane.showMessageDialog(c, "Sides Changed!");
             }
+
         });
         optionseMenu.add(switchSides);
+
+        final JMenuItem Undo = new JMenuItem("Undo Move");
+        Undo.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                for (int i = 0; i < BoardRecord.size(); i++) {
+                    Board.PrintGame();
+                    System.out.println("Current Board ^^");
+                    for (int[] x : BoardRecord.get(i)) {
+                        for (int y : x) {
+                            System.out.print(y + " ");
+                        }
+                        System.out.println();
+                    }
+                    System.out.println("Board Compared ^^");
+                    System.out.println("");
+                    System.out.println("here");
+//                    if (BoardRecord.get(i).equals(Board.board)) {
+                    if (Arrays.deepEquals(BoardRecord.get(i), Board.board)) {
+                        System.out.println("Board Found at " + i);
+                        int PreviousMoveIndex = 0;
+                        for (int l = i; l >= 0; l--) {
+                            if(TurnRecord.get(i).equals(Board.turn))
+                            PreviousMoveIndex = l;
+                        }
+//                        Board.PrintGame();
+//                        System.out.println("");
+                        Board.setBoard(BoardRecord.get(PreviousMoveIndex));
+                        Board.turn = TurnRecord.get(PreviousMoveIndex);
+                        break;
+                    }
+
+                }
+                boardPanel.updateBoardPanel(Board);
+                boardPanel.revalidate();
+            }
+
+        });
+        optionseMenu.add(Undo);
 
         final JMenuItem newGame = new JMenuItem("New Game");
         newGame.addActionListener(new ActionListener() {
@@ -443,6 +510,9 @@ public class GameFrame extends javax.swing.JFrame implements WindowListener {
         boardPanel.updateBoardPanel(Board);
         boardPanel.revalidate();
 
+        BoardRecord.add(cloneBoard(Board.board));
+        TurnRecord.add(Board.turn);
+
         CheckerTimer = new javax.swing.Timer(1000, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 CheckWin();
@@ -451,12 +521,18 @@ public class GameFrame extends javax.swing.JFrame implements WindowListener {
                     switch (PlayerOneAlgorithm) {
                         case "Minimax":
                             addMovetoLogMoves(checkersMinimax.makeMove(Board, PlayerOneDepth, true));
+                            BoardRecord.add(cloneBoard(Board.board));
+                            TurnRecord.add(Board.turn);
                             break;
                         case "Alpha Beta":
                             addMovetoLogMoves(checkersAlphaBeta.makeMove(Board, PlayerOneDepth, true));
+                            BoardRecord.add(cloneBoard(Board.board));
+                            TurnRecord.add(Board.turn);
                             break;
                         default:
                             addMovetoLogMoves(checkersRandom.makeMove(Board, PlayerOneDepth, true));
+                            BoardRecord.add(cloneBoard(Board.board));
+                            TurnRecord.add(Board.turn);
                             break;
                     }
 
@@ -479,12 +555,18 @@ public class GameFrame extends javax.swing.JFrame implements WindowListener {
                             switch (PlayerTwoAlgorithm) {
                                 case "Minimax":
                                     addMovetoLogMoves(checkersMinimax.makeMove(Board, PlayerTwoDepth, false));
+                                    BoardRecord.add(cloneBoard(Board.board));
+                                    TurnRecord.add(Board.turn);
                                     break;
                                 case "Alpha Beta":
                                     addMovetoLogMoves(checkersAlphaBeta.makeMove(Board, PlayerTwoDepth, false));
+                                    BoardRecord.add(cloneBoard(Board.board));
+                                    TurnRecord.add(Board.turn);
                                     break;
                                 default:
                                     addMovetoLogMoves(checkersRandom.makeMove(Board, PlayerTwoDepth, false));
+                                    BoardRecord.add(cloneBoard(Board.board));
+                                    TurnRecord.add(Board.turn);
                                     break;
                             }
                         }
@@ -847,6 +929,15 @@ public class GameFrame extends javax.swing.JFrame implements WindowListener {
             }
         });
         t.start();
+    }
+
+    public static int[][] cloneBoard(int[][] board) {
+
+        final int[][] result = new int[board.length][];
+        for (int i = 0; i < board.length; i++) {
+            result[i] = Arrays.copyOf(board[i], board[i].length);
+        }
+        return result;
     }
 
 }

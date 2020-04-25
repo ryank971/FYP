@@ -15,12 +15,12 @@ import java.util.List;
  *
  * @author Ryan Kelly
  */
-public class TestMinimax {
+public class TestAIAlgorithms {
     
     
         static int best;
         static List<Integer> moves = new ArrayList<Integer>();
-      public static  int minimax(TestTreeNode node,int depth, Boolean maximizingP){
+    public static  int minimax(TestTreeNode node,int depth, Boolean maximizingP){
        if(depth == 0)
        {
             return node.data;
@@ -101,7 +101,6 @@ public class TestMinimax {
     }
             
             
-      
     public static int Max(int valueOne,int valueTwo){
         if(valueOne > valueTwo)
         return valueOne;

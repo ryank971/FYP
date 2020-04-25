@@ -15,7 +15,6 @@ import java.awt.event.*;
 import java.util.List;
 import javax.swing.*;
 
-
 /**
  *
  * @author Ryan Kelly
@@ -59,6 +58,8 @@ public class TilePanel extends JLabel implements MouseListener {
                         if (move.equals(Current[0] + "," + Current[1] + "-" + Move[0] + "," + Move[1])) {
                             playerCheckers.makeMove(Board, Current[0] + "," + Current[1], Move[0] + "," + Move[1]);
                             addMovetoLogMoves(playerCheckers.BestMove);
+                            BoardRecord.add(cloneBoard(Board.board));
+                            TurnRecord.add(Board.turn);
                         }
                     }
 
@@ -82,6 +83,8 @@ public class TilePanel extends JLabel implements MouseListener {
                         if (move.equals(Current[0] + "," + Current[1] + "-" + Move[0] + "," + Move[1])) {
                             playerCheckers.makeMove(Board, Current[0] + "," + Current[1], Move[0] + "," + Move[1]);
                             addMovetoLogMoves(playerCheckers.BestMove);
+                            BoardRecord.add(cloneBoard(Board.board));
+                            TurnRecord.add(Board.turn);
                         }
                     }
 

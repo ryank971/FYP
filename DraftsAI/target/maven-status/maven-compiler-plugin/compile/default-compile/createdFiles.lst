@@ -20,9 +20,9 @@ GUI\Menu$3.class
 MainFolder\TreeNode.class
 GUI\Menu.class
 GUI\setup$2.class
+GUI\GameFrame$11.class
 Connect4\Connect4AlphaBeta.class
 Reversi\Reversi.class
-GUI\RunProject.class
 GUI\GameFrame$7.class
 MainFolder\Board.class
 GUI\Menu$2.class

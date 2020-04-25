@@ -55,6 +55,7 @@ public class setup extends javax.swing.JPanel {
         MinimaxOptionPlayer1.setAutoscrolls(true);
 
         buttonGroup.add(AlphaBetaOptionPlayer1);
+        AlphaBetaOptionPlayer1.setSelected(true);
         AlphaBetaOptionPlayer1.setText("Alpha Beta");
         AlphaBetaOptionPlayer1.setAutoscrolls(true);
 
@@ -67,6 +68,7 @@ public class setup extends javax.swing.JPanel {
         sliderMinimaxPlayer1.setMinimum(1);
         sliderMinimaxPlayer1.setMinorTickSpacing(1);
         sliderMinimaxPlayer1.setPaintLabels(true);
+        sliderMinimaxPlayer1.setValue(3);
         sliderMinimaxPlayer1.setAutoscrolls(true);
 
         sliderAlphaBetaPlayer1.setMajorTickSpacing(1);
@@ -74,6 +76,7 @@ public class setup extends javax.swing.JPanel {
         sliderAlphaBetaPlayer1.setMinimum(1);
         sliderAlphaBetaPlayer1.setMinorTickSpacing(1);
         sliderAlphaBetaPlayer1.setPaintLabels(true);
+        sliderAlphaBetaPlayer1.setValue(5);
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel1.setText("Vs");
@@ -83,6 +86,7 @@ public class setup extends javax.swing.JPanel {
         sliderMinimax1Player2.setMinimum(1);
         sliderMinimax1Player2.setMinorTickSpacing(1);
         sliderMinimax1Player2.setPaintLabels(true);
+        sliderMinimax1Player2.setValue(3);
         sliderMinimax1Player2.setAutoscrolls(true);
 
         sliderAlphaBeta1Player2.setMajorTickSpacing(1);
@@ -90,8 +94,10 @@ public class setup extends javax.swing.JPanel {
         sliderAlphaBeta1Player2.setMinimum(1);
         sliderAlphaBeta1Player2.setMinorTickSpacing(1);
         sliderAlphaBeta1Player2.setPaintLabels(true);
+        sliderAlphaBeta1Player2.setValue(5);
 
         buttonGroup2.add(MinimaxOption1Player2);
+        MinimaxOption1Player2.setSelected(true);
         MinimaxOption1Player2.setText("Minimax");
         MinimaxOption1Player2.setAutoscrolls(true);
 
@@ -105,7 +111,7 @@ public class setup extends javax.swing.JPanel {
 
         jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
-        Player2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "AI", "Human" }));
+        Player2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Human", "AI", " " }));
         Object selected = Player2.getSelectedItem();
         if (selected.toString().equals("AI")) {
             MinimaxOption1Player2.setEnabled(true);
@@ -126,7 +132,7 @@ public class setup extends javax.swing.JPanel {
             }
         });
 
-        Player1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Human", "AI" }));
+        Player1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "AI", "Human", " " }));
         selected = Player1.getSelectedItem();
         if (selected.toString().equals("AI")) {
             MinimaxOptionPlayer1.setEnabled(true);
